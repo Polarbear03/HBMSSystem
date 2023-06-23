@@ -1,0 +1,7 @@
+server:
+    port: 8080
+    servlet:
+        context-path: /setter
+spring:
+    config:
+        import: conf/mysql.yml,conf/redis.yml,conf/mybatis.yml
