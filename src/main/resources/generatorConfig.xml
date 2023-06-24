@@ -11,18 +11,18 @@
     -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!--防止生成重复代码-->
-<!--        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
 
         <commentGenerator>
             <!--是否去掉生成日期-->
             <property name="suppressDate" value="true"/>
             <!--是否去除注释-->
-            <property name="suppressAllComments" value="false"/>
+            <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
         <!--连接数据库信息-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/project?useUnicode=true&amp;characterSet=UTF-8&amp;serverTimezone=Asia/Shanghai"
+                        connectionURL="jdbc:mysql://localhost:3306/hbmssystem?useUnicode=true&amp;characterSet=UTF-8&amp;serverTimezone=Asia/Shanghai"
                         userId="root"
                         password="953306">
         </jdbcConnection>
@@ -50,16 +50,19 @@
         </javaClientGenerator>
 
         <!-- 表名和对应的实体类名-->
-        <table tableName="administrators" domainObjectName="Admin"/>
+        <table tableName="admins" domainObjectName="Admin"/>
         <table tableName="customers" domainObjectName="Customer"/>
         <table tableName="installers" domainObjectName="Installer"/>
         <table tableName="merchants" domainObjectName="Merchant"/>
-        <table tableName="orderdetails" domainObjectName="OrderDetail"/>
+        <table tableName="order_details" domainObjectName="OrderDetail"/>
         <table tableName="orders" domainObjectName="Order"/>
-        <table tableName="paymentinfo" domainObjectName="PaymentInfo"/>
-        <table tableName="permissions" domainObjectName="Permission"/>
         <table tableName="products" domainObjectName="Product"/>
+        <table tableName="product_categories" domainObjectName="ProductCategories"/>
+        <table tableName="tz_sys_menu" domainObjectName="SystemMenu"/>
         <table tableName="reviews" domainObjectName="Review"/>
+        <table tableName="tz_sys_menu" domainObjectName="SystemMenu"/>
+        <table tableName="users" domainObjectName="User"/>
+        <table tableName="tasks" domainObjectName="Task"/>
 
     </context>
 </generatorConfiguration>
