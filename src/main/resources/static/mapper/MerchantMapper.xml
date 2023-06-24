@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    merchant_id, user_id, role_id, merchant_name, contact, address, email, business_license_number, 
+    merchant_id, user_id, role_id, merchant_name, contact, address, email, business_license_number,
     registration_date, avatar
   </sql>
   <sql id="Blob_Column_List">
@@ -86,12 +86,12 @@
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List"/>
     ,
-    <include refid="Blob_Column_List" />
+    <include refid="Blob_Column_List"/>
     from merchants
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -118,13 +118,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.example.model.entity.Merchant">
-    insert into merchants (merchant_id, user_id, role_id, 
-      merchant_name, contact, address, 
-      email, business_license_number, registration_date, 
+    insert into merchants (merchant_id, user_id, role_id,
+      merchant_name, contact, address,
+      email, business_license_number, registration_date,
       avatar, introduction)
-    values (#{merchantId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
-      #{merchantName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{businessLicenseNumber,jdbcType=VARCHAR}, #{registrationDate,jdbcType=DATE}, 
+    values (#{merchantId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER},
+      #{merchantName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{email,jdbcType=VARCHAR}, #{businessLicenseNumber,jdbcType=VARCHAR}, #{registrationDate,jdbcType=DATE},
       #{avatar,jdbcType=VARCHAR}, #{introduction,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.model.entity.Merchant">

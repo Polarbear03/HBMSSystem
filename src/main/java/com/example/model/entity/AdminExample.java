@@ -14,6 +14,10 @@ public class AdminExample {
         oredCriteria = new ArrayList<>();
     }
 
+    /**
+     * 添加排序规则
+     * @param orderByClause
+     */
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
     }
@@ -22,6 +26,10 @@ public class AdminExample {
         return orderByClause;
     }
 
+    /**
+     * 去除重复类型
+     * @param distinct
+     */
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
@@ -104,51 +112,99 @@ public class AdminExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        /**
+         * 添加adminId为null的条件
+         * @return
+         */
         public Criteria andAdminIdIsNull() {
             addCriterion("admin_id is null");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId不为null的条件
+         * @return
+         */
         public Criteria andAdminIdIsNotNull() {
             addCriterion("admin_id is not null");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId等于value的条件
+         * @param value
+         * @return
+         */
         public Criteria andAdminIdEqualTo(Integer value) {
             addCriterion("admin_id =", value, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId不等于value的条件
+         * @param value
+         * @return
+         */
         public Criteria andAdminIdNotEqualTo(Integer value) {
             addCriterion("admin_id <>", value, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId大于value的条件
+         * @param value
+         * @return
+         */
         public Criteria andAdminIdGreaterThan(Integer value) {
             addCriterion("admin_id >", value, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId大于等于value的条件
+         * @param value
+         * @return
+         */
         public Criteria andAdminIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("admin_id >=", value, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加Admin小于value的条件
+         * @param value
+         * @return
+         */
         public Criteria andAdminIdLessThan(Integer value) {
             addCriterion("admin_id <", value, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId小于等于Value的条件
+         * @param value
+         * @return
+         */
         public Criteria andAdminIdLessThanOrEqualTo(Integer value) {
             addCriterion("admin_id <=", value, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId在List这个集合当中的条件
+         * @param values
+         * @return
+         */
         public Criteria andAdminIdIn(List<Integer> values) {
             addCriterion("admin_id in", values, "adminId");
             return (Criteria) this;
         }
 
+        /**
+         * 添加AdminId在List这个集合之外的条件
+         * @param values
+         * @return
+         */
         public Criteria andAdminIdNotIn(List<Integer> values) {
             addCriterion("admin_id not in", values, "adminId");
             return (Criteria) this;
@@ -324,11 +380,21 @@ public class AdminExample {
             return (Criteria) this;
         }
 
+        /**
+         * 添加全名为value的模糊查询条件
+         * @param value
+         * @return
+         */
         public Criteria andFullNameLike(String value) {
             addCriterion("full_name like", value, "fullName");
             return (Criteria) this;
         }
 
+        /**
+         * 添加全名不为value的模糊查询条件
+         * @param value
+         * @return
+         */
         public Criteria andFullNameNotLike(String value) {
             addCriterion("full_name not like", value, "fullName");
             return (Criteria) this;
@@ -344,11 +410,23 @@ public class AdminExample {
             return (Criteria) this;
         }
 
+        /**
+         * 添加全名在value1和value2之间的条件
+         * @param value1
+         * @param value2
+         * @return
+         */
         public Criteria andFullNameBetween(String value1, String value2) {
             addCriterion("full_name between", value1, value2, "fullName");
             return (Criteria) this;
         }
 
+        /**
+         * 添加全面不在Value1和value2之间的条件
+         * @param value1
+         * @param value2
+         * @return
+         */
         public Criteria andFullNameNotBetween(String value1, String value2) {
             addCriterion("full_name not between", value1, value2, "fullName");
             return (Criteria) this;
