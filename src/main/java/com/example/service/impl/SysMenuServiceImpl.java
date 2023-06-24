@@ -22,51 +22,51 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public int deleteByExample(SystemMenuExample example) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.deleteByExample(example);
     }
 
     @Override
     public int deleteByPrimaryKey(Long menuId) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.deleteByPrimaryKey(menuId);
     }
 
     @Override
     public int insert(SystemMenu row) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.insert(row);
     }
 
     @Override
     public int insertSelective(SystemMenu row) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.insertSelective(row);
     }
 
     @Override
     public List<SystemMenu> selectByExample(SystemMenuExample example) {
-        return systemMenuMapper null;
+        return systemMenuMapper.selectByExample(example);
     }
 
     @Override
     public SystemMenu selectByPrimaryKey(Long menuId) {
-        return systemMenuMapper null;
+        return systemMenuMapper.selectByPrimaryKey(menuId);
     }
 
     @Override
     public int updateByExampleSelective(SystemMenu row, SystemMenuExample example) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.updateByExampleSelective(row,example);
     }
 
     @Override
     public int updateByExample(SystemMenu row, SystemMenuExample example) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.updateByExample(row,example);
     }
 
     @Override
     public int updateByPrimaryKeySelective(SystemMenu row) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.updateByPrimaryKeySelective(row);
     }
 
     @Override
     public int updateByPrimaryKey(SystemMenu row) {
-        return systemMenuMapper 0;
+        return systemMenuMapper.updateByPrimaryKey(row);
     }
 }
