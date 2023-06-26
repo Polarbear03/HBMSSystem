@@ -5,12 +5,14 @@ import com.example.model.entity.Admin;
 import com.example.model.entity.AdminExample;
 import com.example.service.inter.AdminService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
     @Resource
     private AdminMapper adminMapper;

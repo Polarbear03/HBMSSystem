@@ -1,5 +1,8 @@
 package com.example.model.entity;
 
+import org.springframework.stereotype.Component;
+
+
 public class SystemMenu {
     private Long menuId;
 

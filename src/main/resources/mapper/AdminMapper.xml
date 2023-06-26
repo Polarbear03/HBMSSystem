@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.dao.mapper.AdminMapper">
+
     <resultMap id="BaseResultMap" type="com.example.model.entity.Admin">
         <id column="admin_id" jdbcType="INTEGER" property="adminId"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
@@ -10,6 +11,7 @@
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -74,6 +76,7 @@
         admin_id
         , user_id, role_id, full_name, contact, email, avatar
     </sql>
+
     <select id="selectByExample" parameterType="com.example.model.entity.AdminExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
@@ -88,6 +91,7 @@
             order by ${orderByClause}
         </if>
     </select>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

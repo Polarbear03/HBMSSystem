@@ -1,5 +1,7 @@
 package com.example.model.entity;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

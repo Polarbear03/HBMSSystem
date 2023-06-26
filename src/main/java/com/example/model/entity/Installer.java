@@ -1,5 +1,8 @@
 package com.example.model.entity;
 
+
+
+
 public class Installer {
     private Integer installerId;
 

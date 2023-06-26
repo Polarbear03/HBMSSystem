@@ -1,5 +1,6 @@
 package com.example.model.entity;
 
+
 public class Admin {
     private Integer adminId;
 

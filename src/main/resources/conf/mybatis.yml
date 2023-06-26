@@ -2,5 +2,5 @@ mybatis:
     configuration:
         log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
         lazy-loading-enabled: true
-    mapper-locations: classpath:/static/mapper
+    mapper-locations: classpath:mapper/*.xml
     type-aliases-package: com.example.dao.mapper,com.example.model.entity
