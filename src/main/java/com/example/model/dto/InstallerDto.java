@@ -1,39 +1,29 @@
-package com.example.model.entity;
+package com.example.model.dto;
 
 
-import com.example.model.group.AddGroup;
-import com.example.model.group.EditGroup;
-import jakarta.validation.constraints.*;
-import org.springframework.data.repository.query.Param;
 
-public class Admin {
-    private Integer adminId;
+
+public class InstallerDto {
+    private Integer installerId;
 
     private Integer userId;
 
     private Integer roleId;
 
-    //@NotNull(message = "管理员姓名不能为空",
-    //        groups = {AddGroup.class, EditGroup.class})
     private String fullName;
 
-    //@NotBlank(message = "管理员必须要有联系方式",
-    //            groups = {AddGroup.class, EditGroup.class})
-    //@Pattern(regexp = "^[1]+[3,8]+\\d{9}$")
     private String contact;
 
-    //@Email(message = "邮箱格式不符合规则",
-    //        groups = {AddGroup.class, EditGroup.class})
     private String email;
 
     private String avatar;
 
-    public Integer getAdminId() {
-        return adminId;
+    public Integer getInstallerId() {
+        return installerId;
     }
 
-    public void setAdminId(Integer adminId) {
-        this.adminId = adminId;
+    public void setInstallerId(Integer installerId) {
+        this.installerId = installerId;
     }
 
     public Integer getUserId() {
