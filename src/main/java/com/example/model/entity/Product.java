@@ -1,9 +1,16 @@
 package com.example.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Product {
     private Integer productid;
 
@@ -15,43 +22,4 @@ public class Product {
 
     private Integer stockquantity;
 
-    public Integer getProductid() {
-        return productid;
-    }
-
-    public void setProductid(Integer productid) {
-        this.productid = productid;
-    }
-
-    public String getProductname() {
-        return productname;
-    }
-
-    public void setProductname(String productname) {
-        this.productname = productname == null ? null : productname.trim();
-    }
-
-    public Integer getMerchantid() {
-        return merchantid;
-    }
-
-    public void setMerchantid(Integer merchantid) {
-        this.merchantid = merchantid;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getStockquantity() {
-        return stockquantity;
-    }
-
-    public void setStockquantity(Integer stockquantity) {
-        this.stockquantity = stockquantity;
-    }
 }

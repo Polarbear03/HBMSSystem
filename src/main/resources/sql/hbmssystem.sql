@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 27/06/2023 17:01:07
+ Date: 28/06/2023 20:44:25
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,11 @@ CREATE TABLE `admins`  (
   PRIMARY KEY (`admin_id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
   INDEX `role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of admins
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for customers
@@ -55,7 +59,11 @@ CREATE TABLE `customers`  (
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `customers_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of customers
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for installers
@@ -72,7 +80,11 @@ CREATE TABLE `installers`  (
   PRIMARY KEY (`installer_id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
   INDEX `role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of installers
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for merchants
@@ -95,7 +107,11 @@ CREATE TABLE `merchants`  (
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   CONSTRAINT `merchants_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `merchants_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of merchants
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for order_details
@@ -111,7 +127,11 @@ CREATE TABLE `order_details`  (
   PRIMARY KEY (`order_detail_id`) USING BTREE,
   INDEX `order_id`(`order_id` ASC) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of order_details
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for orders
@@ -128,7 +148,11 @@ CREATE TABLE `orders`  (
   PRIMARY KEY (`order_id`) USING BTREE,
   INDEX `customer_id`(`customer_id` ASC) USING BTREE,
   INDEX `merchant_id`(`merchant_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of orders
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for permissions
@@ -138,10 +162,29 @@ CREATE TABLE `permissions`  (
   `permission_id` int NOT NULL AUTO_INCREMENT,
   `permission_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `permission_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `create_date` date NULL DEFAULT NULL,
-  `update_date` date NULL DEFAULT NULL,
+  `status` int NULL DEFAULT NULL,
+  `usable` int NULL DEFAULT NULL,
   PRIMARY KEY (`permission_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of permissions
+-- ----------------------------
+INSERT INTO `permissions` VALUES (1, '顾客管理', '/customer/**', 1, 1);
+INSERT INTO `permissions` VALUES (2, '顾客查询', 'customer:query', 1, 1);
+INSERT INTO `permissions` VALUES (3, '顾客添加', 'customer:add', 1, 1);
+INSERT INTO `permissions` VALUES (4, '顾客修改', 'customer:update', 1, 1);
+INSERT INTO `permissions` VALUES (5, '顾客封禁', 'customer:delete', 1, 1);
+INSERT INTO `permissions` VALUES (6, '商家管理', '/merchant/**', 1, 1);
+INSERT INTO `permissions` VALUES (7, '商家查询', 'merchant:query', 1, 1);
+INSERT INTO `permissions` VALUES (8, '商家添加', 'merchant:add', 1, 1);
+INSERT INTO `permissions` VALUES (9, '商家修改', 'merchant:update', 1, 1);
+INSERT INTO `permissions` VALUES (10, '商家下架', 'merchant:delete', 1, 1);
+INSERT INTO `permissions` VALUES (11, '安装员管理', '/installer/**', 1, 1);
+INSERT INTO `permissions` VALUES (12, '安装员增加', 'installer:add', 1, 1);
+INSERT INTO `permissions` VALUES (13, '安装员封禁', 'installer:delete', 1, 1);
+INSERT INTO `permissions` VALUES (14, '安装员修改', 'installer:update', 1, 1);
+INSERT INTO `permissions` VALUES (15, '安装员查询', 'installer:query', 1, 1);
 
 -- ----------------------------
 -- Table structure for product_categories
@@ -157,6 +200,10 @@ CREATE TABLE `product_categories`  (
   PRIMARY KEY (`category_id`) USING BTREE,
   INDEX `parent_category_id`(`parent_category_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_categories
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for products
@@ -176,7 +223,11 @@ CREATE TABLE `products`  (
   PRIMARY KEY (`product_id`) USING BTREE,
   INDEX `merchant_id`(`merchant_id` ASC) USING BTREE,
   INDEX `category_id`(`category_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of products
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for reviews
@@ -192,7 +243,11 @@ CREATE TABLE `reviews`  (
   PRIMARY KEY (`review_id`) USING BTREE,
   INDEX `order_id`(`order_id` ASC) USING BTREE,
   INDEX `customer_id`(`customer_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of reviews
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for role_permissions
@@ -208,6 +263,28 @@ CREATE TABLE `role_permissions`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of role_permissions
+-- ----------------------------
+INSERT INTO `role_permissions` VALUES (1, 1, 1);
+INSERT INTO `role_permissions` VALUES (2, 1, 2);
+INSERT INTO `role_permissions` VALUES (3, 1, 3);
+INSERT INTO `role_permissions` VALUES (4, 1, 4);
+INSERT INTO `role_permissions` VALUES (5, 1, 5);
+INSERT INTO `role_permissions` VALUES (6, 1, 6);
+INSERT INTO `role_permissions` VALUES (7, 1, 7);
+INSERT INTO `role_permissions` VALUES (8, 1, 8);
+INSERT INTO `role_permissions` VALUES (9, 1, 9);
+INSERT INTO `role_permissions` VALUES (10, 1, 10);
+INSERT INTO `role_permissions` VALUES (11, 1, 11);
+INSERT INTO `role_permissions` VALUES (12, 1, 12);
+INSERT INTO `role_permissions` VALUES (13, 1, 13);
+INSERT INTO `role_permissions` VALUES (14, 1, 14);
+INSERT INTO `role_permissions` VALUES (15, 1, 15);
+INSERT INTO `role_permissions` VALUES (20, 2, 5);
+INSERT INTO `role_permissions` VALUES (21, 3, 10);
+INSERT INTO `role_permissions` VALUES (22, 4, 13);
+
+-- ----------------------------
 -- Table structure for roles
 -- ----------------------------
 DROP TABLE IF EXISTS `roles`;
@@ -216,6 +293,14 @@ CREATE TABLE `roles`  (
   `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of roles
+-- ----------------------------
+INSERT INTO `roles` VALUES (1, '管理员');
+INSERT INTO `roles` VALUES (2, '商家');
+INSERT INTO `roles` VALUES (3, '顾客');
+INSERT INTO `roles` VALUES (4, '安装员');
 
 -- ----------------------------
 -- Table structure for tasks
@@ -232,7 +317,11 @@ CREATE TABLE `tasks`  (
   PRIMARY KEY (`task_id`) USING BTREE,
   INDEX `installer_id`(`installer_id` ASC) USING BTREE,
   INDEX `order_id`(`order_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tasks
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tz_sys_menu
@@ -249,6 +338,10 @@ CREATE TABLE `tz_sys_menu`  (
   `order_num` int NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of tz_sys_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for users
@@ -268,7 +361,12 @@ CREATE TABLE `users`  (
   `registration_date` date NULL DEFAULT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
+  UNIQUE INDEX `username`(`username` ASC) USING BTREE COMMENT '用户名',
   INDEX `role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

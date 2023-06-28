@@ -2,8 +2,16 @@ package com.example.model.entity;
 
 
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Order {
     private Integer orderid;
 
@@ -13,35 +21,4 @@ public class Order {
 
     private String orderstatus;
 
-    public Integer getOrderid() {
-        return orderid;
-    }
-
-    public void setOrderid(Integer orderid) {
-        this.orderid = orderid;
-    }
-
-    public Integer getCustomerid() {
-        return customerid;
-    }
-
-    public void setCustomerid(Integer customerid) {
-        this.customerid = customerid;
-    }
-
-    public Date getOrderdate() {
-        return orderdate;
-    }
-
-    public void setOrderdate(Date orderdate) {
-        this.orderdate = orderdate;
-    }
-
-    public String getOrderstatus() {
-        return orderstatus;
-    }
-
-    public void setOrderstatus(String orderstatus) {
-        this.orderstatus = orderstatus == null ? null : orderstatus.trim();
-    }
 }

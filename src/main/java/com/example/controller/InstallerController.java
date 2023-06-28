@@ -8,4 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/installer")
 @Slf4j(topic = "Installer Operator")
 public class InstallerController {
+
+
 }

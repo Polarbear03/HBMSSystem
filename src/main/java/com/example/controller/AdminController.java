@@ -4,7 +4,10 @@ package com.example.controller;
 import com.alibaba.fastjson2.JSON;
 import com.example.model.entity.Admin;
 import com.example.model.entity.AdminExample;
+import com.example.model.entity.User;
+import com.example.model.entity.UserExample;
 import com.example.service.inter.AdminService;
+import com.example.service.inter.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,8 @@ import java.util.List;
 public class AdminController {
     @Resource
     private AdminService adminService;
+    @Resource
+    private UserService userService;
 
     @GetMapping({"/getAllAdmin","/findAdmin"})
     @Transactional(readOnly = true)
@@ -62,12 +67,15 @@ public class AdminController {
         AdminExample adminExample  = new AdminExample();
         AdminExample.Criteria criteria = adminExample.createCriteria();
         if (adminId.length == 1) {
-            adminService.deleteByAdminId(adminId[0]);
+            criteria.andAdminIdEqualTo(adminId[0]);
         } else {
             List<Integer> admins = Arrays.asList(adminId);
             criteria.andAdminIdIn(admins);
-            adminService.deleteByExample(adminExample);
         }
+        adminService.deleteByExample(adminExample);
         return JSON.toJSONString("删除管理员信息成功！");
     }
+
+
+
 }
