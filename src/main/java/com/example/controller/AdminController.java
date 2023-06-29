@@ -1,75 +1,64 @@
 package com.example.controller;
 
 
-import com.alibaba.fastjson2.JSON;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.model.bean.JsonResponse;
+import com.example.model.entity.Admin;
+import com.example.service.inter.AdminService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
 @Slf4j(topic = "Admin Controller")
 public class AdminController {
-    //@Resource
-    //private AdminService adminService;
-    //@Resource
-    //private UserService userService;
-    //
-    //@GetMapping({"/getAllAdmin","/findAdmin"})
-    //@Transactional(readOnly = true)
-    //public List<Admin> getAllAdmin(@RequestParam(value = "adminId",required = false) Integer adminId,
-    //                          @RequestParam(value = "fullName",required = false) String fullName,
-    //                          @RequestParam(value = "contact",required = false) String contact,
-    //                          @RequestParam(value = "email",required = false) String email) {
-    //    AdminExample adminExample = new AdminExample();
-    //    AdminExample.Criteria criteria = adminExample.createCriteria();
-    //    if (adminId != null) {
-    //        criteria.andAdminIdEqualTo(adminId);
-    //    }
-    //    if (fullName != null && !fullName.isEmpty()) {
-    //        criteria.andFullNameLike(fullName);
-    //    }
-    //    if (contact != null && !contact.isEmpty()) {
-    //        criteria.andContactLike(contact);
-    //    }
-    //    if (email != null && !email.isEmpty()) {
-    //        criteria.andEmailLike(email);
-    //    }
-    //    adminExample.setDistinct(false);
-    //    adminExample.setOrderByClause("admin_id");
-    //    return adminService.selectByExample(adminExample);
-    //}
-    //
-    //@PostMapping("/addAdminInfo")
-    //public String insertAdmin(Admin admin) {
-    //    adminService.insertAdmin(admin);
-    //    return JSON.toJSONString("新增管理员成功!");
-    //}
-    //
-    //@PostMapping("/updateAdminInfo")
-    //public String updateAdmin(Admin admin) {
-    //    adminService.updateByAdminId(admin);
-    //    return JSON.toJSONString("修改该管理员信息成功！");
-    //}
-    //
-    //@PostMapping("/deleteAdminInfo")
-    //public String deleteAdmin(@RequestParam(value = "adminId",required = false) Integer[] adminId) {
-    //    AdminExample adminExample  = new AdminExample();
-    //    AdminExample.Criteria criteria = adminExample.createCriteria();
-    //    if (adminId.length == 1) {
-    //        criteria.andAdminIdEqualTo(adminId[0]);
-    //    } else {
-    //        List<Integer> admins = Arrays.asList(adminId);
-    //        criteria.andAdminIdIn(admins);
-    //    }
-    //    adminService.deleteByExample(adminExample);
-    //    return JSON.toJSONString("删除管理员信息成功！");
-    //}
+    @Resource
+    private AdminService adminService;
 
+    @GetMapping("/adminList")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Admin>> getAllAdmin(Admin admin) {
+        QueryWrapper<Admin> adminQueryWrapper = null;
+        boolean flag = false;
+        if (admin != null) {
+            adminQueryWrapper = new QueryWrapper<>(admin);
+            flag = true;
+        }
+        if (flag) {
+            return JsonResponse.success(adminService.list(adminQueryWrapper));
+        }
+        return JsonResponse.success(adminService.list());
+    }
 
+    @PostMapping("/modifyAdmin")
+    public JsonResponse<String> updateAdmin(Admin admin) {
+        boolean updateSuccess = adminService.updateById(admin);
+        if (updateSuccess) {
+            return JsonResponse.success("更新管理员信息成功！");
+        }
+        return JsonResponse.error("更新管理员信息失败，请稍后重试！");
+    }
 
+    @PostMapping("/save")
+    public JsonResponse<String> saveAdmin(Admin admin) {
+        boolean saveSuccess = adminService.save(admin);
+        if (saveSuccess) {
+            return JsonResponse.success("添加管理员信息成功！");
+        }
+        return JsonResponse.error("添加管理员信息失败，请稍后重试！");
+    }
+
+    @PostMapping("/removeAdmin")
+    public JsonResponse<String> deleteAdmin(Admin admin) {
+        boolean removeSuccess = adminService.removeById(admin);
+        if (removeSuccess) {
+            return JsonResponse.success("移除该管理员成功！");
+        }
+        return JsonResponse.error("移除该管理员时出现错误，请稍后重试！");
+    }
 }

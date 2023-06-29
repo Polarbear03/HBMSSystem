@@ -1,6 +1,12 @@
 package com.example.controller;
 
 import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.model.bean.JsonResponse;
+import com.example.model.dto.CustomerDto;
+import com.example.model.entity.Admin;
+import com.example.model.entity.Customer;
+import com.example.service.inter.CustomerService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,67 +20,49 @@ import java.util.List;
 @Slf4j(topic = "Customer Operator")
 public class CustomerController {
 
-    //@Resource
-    //private CustomerService customerService;
-    //
-    //@GetMapping({"/getAllCustomer","/findCustomer"})
-    //@Transactional(readOnly = true)
-    //public List<Customer> getAllCustomer(@RequestParam(value = "customerId",required = false) Integer customerId,
-    //                               @RequestParam(value = "fullName",required = false) String fullName,
-    //                               @RequestParam(value = "contact",required = false) String contact,
-    //                               @RequestParam(value = "email",required = false) String email,
-    //                               @RequestParam(value = "gender",required = false) String gender,
-    //                               @RequestParam(value = "address",required = false) String address) {
-    //    CustomerExample customerExample = new CustomerExample();
-    //    CustomerExample.Criteria criteria = customerExample.createCriteria();
-    //    if (customerId != null) {
-    //        criteria.andCustomerIdEqualTo(customerId);
-    //    }
-    //    if (fullName != null) {
-    //        criteria.andFullNameLike(fullName);
-    //    }
-    //    if (contact != null) {
-    //        criteria.andContactEqualTo(contact);
-    //    }
-    //    if (email != null) {
-    //        criteria.andEmailEqualTo(email);
-    //    }
-    //    if (gender != null) {
-    //        criteria.andGenderEqualTo(gender);
-    //    }
-    //    if (address != null) {
-    //        criteria.andAddressLike(address);
-    //    }
-    //    customerExample.setDistinct(false);
-    //    customerExample.setOrderByClause("customer_id");
-    //    return customerService.selectByExample(customerExample);
-    //}
-    //
-    //@PostMapping("/addCustomerInfo")
-    //public String insertAdmin(Customer customer) {
-    //    customerService.insert(customer);
-    //    return JSON.toJSONString("新增顾客成功!");
-    //}
-    //
-    //@PostMapping("/updateCustomerInfo")
-    //public String updateAdmin(Customer customer) {
-    //    customerService.updateByExample(customer,null);
-    //    return JSON.toJSONString("修改顾客信息成功！");
-    //}
-    //
-    //@PostMapping("/deleteCustomerInfo")
-    //public String deleteAdmin(@RequestParam(value = "customerId",required = false) Integer[] customerId) {
-    //    CustomerExample customerExample = new CustomerExample();
-    //    CustomerExample.Criteria criteria = customerExample.createCriteria();
-    //    if (customerId.length == 1) {
-    //        criteria.andCustomerIdEqualTo(customerId[0]);
-    //    } else {
-    //        List<Integer> customers = Arrays.asList(customerId);
-    //        criteria.andCustomerIdIn(customers);
-    //    }
-    //    customerService.deleteByExample(customerExample);
-    //    return JSON.toJSONString("删除顾客信息成功！");
-    //
-    //}
+    @Resource
+    private CustomerService customerService;
+
+    @GetMapping("/listCustom")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Customer>> getAllCustomer(Customer customer) {
+        QueryWrapper<Customer> customerQueryWrapper = null;
+        boolean flag = false;
+        if (customer != null) {
+            customerQueryWrapper = new QueryWrapper<>(customer);
+            flag = true;
+        }
+        if (flag) {
+            return JsonResponse.success(customerService.list(customerQueryWrapper));
+        }
+        return JsonResponse.success(customerService.list());
+    }
+
+    @PostMapping("/removeCustom")
+    public JsonResponse<String> removeCustom(Customer customer) {
+        boolean removeSuccess = customerService.removeById(customer);
+        if (removeSuccess) {
+            return JsonResponse.success("删除顾客信息成功");
+        }
+        return JsonResponse.error("删除顾客信息失败，请稍后重试");
+    }
+
+    @PostMapping("/saveCustom")
+    public JsonResponse<String> saveCustomer(Customer customer) {
+        boolean saveSuccess = customerService.save(customer);
+        if (saveSuccess) {
+            return JsonResponse.success("顾客注册成功！");
+        }
+        return JsonResponse.error("注册失败，请稍后重试！");
+    }
+
+    @PostMapping("/updateCustom")
+    public JsonResponse<String> updateCustomer(Customer customer) {
+        boolean updateSuccess = customerService.updateById(customer);
+        if (updateSuccess) {
+            return JsonResponse.success("顾客信息更新成功!");
+        }
+        return JsonResponse.error("顾客信息更新失败，请稍后重试！");
+    }
 
 }
