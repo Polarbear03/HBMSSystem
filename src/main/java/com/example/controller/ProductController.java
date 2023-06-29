@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.entity.Product;
 import com.example.model.vo.ProductVO;
@@ -51,6 +52,32 @@ public class ProductController {
         return productService.list();
     }
 
+    @PostMapping("/modifyProduct")
+    public String updateProduct(Product product) {
+        boolean updateSuccess = productService.updateById(product);
+        if (updateSuccess) {
+            return JSON.toJSONString("更新商品信息成功！");
+        }
+        return JSON.toJSONString("更新商品信息失败，请检查填写信息是否有误！");
+    }
+
+    @PostMapping("/saveProduct")
+    public String saveProduct(Product product) {
+        boolean saveSuccess = productService.save(product);
+        if (saveSuccess) {
+            return JSON.toJSONString("添加商品信息成功！");
+        }
+        return JSON.toJSONString("添加商品信息失败，请检查表单信息是否有误！");
+    }
+
+    @PostMapping("/removeProduct")
+    public String deleteProduct(@RequestParam(value = "productId",required = true)Integer productId) {
+        boolean removeSuccess = productService.removeById(productId);
+        if (removeSuccess) {
+            return JSON.toJSONString("删除该商品成功!");
+        }
+        return JSON.toJSONString("删除该商品时出现错误，请稍候重试！");
+    }
 
 
 }
