@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Product;
 import com.example.service.inter.ProductService;
 import jakarta.annotation.Resource;
@@ -20,9 +21,9 @@ public class ProductController {
     @Resource
     private ProductService productService;
 
-    @GetMapping({"/getProducts","/findProduct"})
+    @GetMapping({"/list","/findProduct"})
     @Transactional(readOnly = true)
-    public List<Product> getAllProduct(@RequestParam(value = "productId",required = false) Integer productId,
+    public JsonResponse<List<Product>> getAllProduct(@RequestParam(value = "productId",required = false) Integer productId,
                                        @RequestParam(value = "productName",required = false) String productName,
                                        @RequestParam(value = "price",required = false) Double price,
                                        @RequestParam(value = "stock",required = false) Integer stock) {
@@ -45,9 +46,9 @@ public class ProductController {
             flag = true;
         }
         if (flag) {
-            return productService.list(objectQueryWrapper);
+            return JsonResponse.success(productService.list(objectQueryWrapper));
         }
-        return productService.list();
+        return JsonResponse.success(productService.list());
     }
 
     @PostMapping("/modifyProduct")
@@ -60,12 +61,12 @@ public class ProductController {
     }
 
     @PostMapping("/saveProduct")
-    public String saveProduct(Product product) {
+    public JsonResponse<String> saveProduct(Product product) {
         boolean saveSuccess = productService.save(product);
         if (saveSuccess) {
-            return JSON.toJSONString("添加商品信息成功！");
+            return JsonResponse.success("商品信息保存成功");
         }
-        return JSON.toJSONString("添加商品信息失败，请检查表单信息是否有误！");
+        return JsonResponse.error("商品信息保存出错");
     }
 
     @PostMapping("/removeProduct")

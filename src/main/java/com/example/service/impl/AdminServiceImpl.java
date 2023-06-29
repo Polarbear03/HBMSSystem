@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.mapper.AdminMapper;
 import com.example.model.entity.Admin;
 import com.example.service.inter.AdminService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+@Service
+@Slf4j
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 }
