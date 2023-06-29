@@ -4,22 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import java.sql.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Product {
-    private Integer productid;
-
-    private String productname;
-
-    private Integer merchantid;
-
-    private BigDecimal price;
-
-    private Integer stockquantity;
-
+    private Integer productId;
+    private Integer merchantId;
+    private Integer categoryId;
+    private String productName;
+    private String description;
+    private Double price;
+    private Integer stock;
+    private Date createDate;
+    private Date updateDate;
+    private String image;
 }

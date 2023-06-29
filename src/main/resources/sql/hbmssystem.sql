@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 28/06/2023 20:44:25
+ Date: 29/06/2023 10:09:11
 */
 
 SET NAMES utf8mb4;
@@ -56,14 +56,13 @@ CREATE TABLE `customers`  (
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`customer_id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
-  INDEX `role_id`(`role_id` ASC) USING BTREE,
-  CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `customers_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `role_id`(`role_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
+INSERT INTO `customers` VALUES (1, 1, 1, '1', '1', '1', '1', '1', '2023-06-28', '2023-06-28', '1');
 
 -- ----------------------------
 -- Table structure for installers
@@ -114,26 +113,6 @@ CREATE TABLE `merchants`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for order_details
--- ----------------------------
-DROP TABLE IF EXISTS `order_details`;
-CREATE TABLE `order_details`  (
-  `order_detail_id` int NOT NULL AUTO_INCREMENT,
-  `order_id` int NULL DEFAULT NULL,
-  `product_id` int NULL DEFAULT NULL,
-  `quantity` int NULL DEFAULT NULL,
-  `unit_price` decimal(10, 2) NULL DEFAULT NULL,
-  `discount` decimal(5, 2) NULL DEFAULT NULL,
-  PRIMARY KEY (`order_detail_id`) USING BTREE,
-  INDEX `order_id`(`order_id` ASC) USING BTREE,
-  INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of order_details
--- ----------------------------
-
--- ----------------------------
 -- Table structure for orders
 -- ----------------------------
 DROP TABLE IF EXISTS `orders`;
@@ -141,10 +120,14 @@ CREATE TABLE `orders`  (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int NULL DEFAULT NULL,
   `merchant_id` int NULL DEFAULT NULL,
+  `product_id` int NULL DEFAULT NULL,
   `order_date` date NULL DEFAULT NULL,
   `order_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `payment_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `total_amount` decimal(10, 2) NULL DEFAULT NULL,
+  `quantity` int NULL DEFAULT NULL,
+  `unit_price` decimal(10, 2) NULL DEFAULT NULL,
+  `discount` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`order_id`) USING BTREE,
   INDEX `customer_id`(`customer_id` ASC) USING BTREE,
   INDEX `merchant_id`(`merchant_id` ASC) USING BTREE
@@ -321,26 +304,6 @@ CREATE TABLE `tasks`  (
 
 -- ----------------------------
 -- Records of tasks
--- ----------------------------
-
--- ----------------------------
--- Table structure for tz_sys_menu
--- ----------------------------
-DROP TABLE IF EXISTS `tz_sys_menu`;
-CREATE TABLE `tz_sys_menu`  (
-  `menu_id` bigint NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint NULL DEFAULT NULL COMMENT '父菜单ID，一级菜单为0',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单名称',
-  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单URL',
-  `perms` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
-  `type` int NULL DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
-  `icon` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
-  `order_num` int NULL DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of tz_sys_menu
 -- ----------------------------
 
 -- ----------------------------

@@ -1,30 +1,7 @@
 package com.example.dao.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.model.entity.Product;
-import com.example.model.entity.ProductExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
-public interface ProductMapper {
-    long countByExample(ProductExample example);
-
-    int deleteByExample(ProductExample example);
-
-    int deleteByPrimaryKey(Integer productid);
-
-    int insert(Product row);
-
-    int insertSelective(Product row);
-
-    List<Product> selectByExample(ProductExample example);
-
-    Product selectByPrimaryKey(Integer productid);
-
-    int updateByExampleSelective(@Param("row") Product row, @Param("example") ProductExample example);
-
-    int updateByExample(@Param("row") Product row, @Param("example") ProductExample example);
-
-    int updateByPrimaryKeySelective(Product row);
-
-    int updateByPrimaryKey(Product row);
+public interface ProductMapper extends BaseMapper<Product> {
 }
