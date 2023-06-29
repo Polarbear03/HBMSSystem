@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -17,12 +19,49 @@ import java.util.List;
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
     @Resource
-    private ProductMapper productMapper;
-
-    @Resource
     private RedisTemplate redisTemplate;
 
-    public List<Product> getAllProduct(Wrapper<Product> productWrapper) {
-        return (List<Product>) productMapper.selectList(productWrapper);
+    @Override
+    public boolean save(Product entity) {
+        return super.save(entity);
+    }
+
+    @Override
+    public boolean saveOrUpdate(Product entity, Wrapper<Product> updateWrapper) {
+        return super.saveOrUpdate(entity, updateWrapper);
+    }
+
+
+    @Override
+    public boolean saveBatch(Collection<Product> entityList, int batchSize) {
+        return super.saveBatch(entityList, batchSize);
+    }
+
+
+    @Override
+    public List<Product> list(Wrapper<Product> queryWrapper) {
+        return super.list(queryWrapper);
+    }
+
+
+    @Override
+    public List<Product> list() {
+        return super.list();
+    }
+
+
+    @Override
+    public boolean updateById(Product entity) {
+        return super.updateById(entity);
+    }
+
+    @Override
+    public boolean removeById(Serializable id) {
+        return super.removeById(id);
+    }
+
+    @Override
+    public boolean removeBatchByIds(Collection<?> list) {
+        return super.removeBatchByIds(list);
     }
 }
