@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 29/06/2023 10:09:11
+ Date: 29/06/2023 15:50:07
 */
 
 SET NAMES utf8mb4;
@@ -170,6 +170,30 @@ INSERT INTO `permissions` VALUES (14, '安装员修改', 'installer:update', 1, 
 INSERT INTO `permissions` VALUES (15, '安装员查询', 'installer:query', 1, 1);
 
 -- ----------------------------
+-- Table structure for product
+-- ----------------------------
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product`  (
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `merchant_id` int NULL DEFAULT NULL,
+  `category_id` int NULL DEFAULT NULL,
+  `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `price` decimal(10, 2) NULL DEFAULT NULL,
+  `stock` int NULL DEFAULT NULL,
+  `create_date` date NULL DEFAULT NULL,
+  `update_date` date NULL DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`product_id`) USING BTREE,
+  INDEX `merchant_id`(`merchant_id` ASC) USING BTREE,
+  INDEX `category_id`(`category_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for product_categories
 -- ----------------------------
 DROP TABLE IF EXISTS `product_categories`;
@@ -186,30 +210,6 @@ CREATE TABLE `product_categories`  (
 
 -- ----------------------------
 -- Records of product_categories
--- ----------------------------
-
--- ----------------------------
--- Table structure for products
--- ----------------------------
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE `products`  (
-  `product_id` int NOT NULL AUTO_INCREMENT,
-  `merchant_id` int NULL DEFAULT NULL,
-  `category_id` int NULL DEFAULT NULL,
-  `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `price` decimal(10, 2) NULL DEFAULT NULL,
-  `stock` int NULL DEFAULT NULL,
-  `create_date` date NULL DEFAULT NULL,
-  `update_date` date NULL DEFAULT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`product_id`) USING BTREE,
-  INDEX `merchant_id`(`merchant_id` ASC) USING BTREE,
-  INDEX `category_id`(`category_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of products
 -- ----------------------------
 
 -- ----------------------------

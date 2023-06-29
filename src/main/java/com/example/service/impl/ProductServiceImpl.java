@@ -5,11 +5,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.mapper.ProductMapper;
 import com.example.model.entity.Product;
 import com.example.service.inter.ProductService;
-import com.sun.tools.javac.util.List;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j

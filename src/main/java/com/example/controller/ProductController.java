@@ -3,19 +3,17 @@ package com.example.controller;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.entity.Product;
-import com.example.model.vo.ProductVO;
 import com.example.service.inter.ProductService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.sql.Wrapper;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/goods/goods")
+@RequestMapping("/goods")
 @Slf4j(topic = "Product Operator")
 public class ProductController {
 
@@ -71,8 +69,15 @@ public class ProductController {
     }
 
     @PostMapping("/removeProduct")
-    public String deleteProduct(@RequestParam(value = "productId",required = true)Integer productId) {
-        boolean removeSuccess = productService.removeById(productId);
+    public String deleteProduct(@RequestParam(value = "productId",required = true)Integer[] productId) {
+        boolean removeSuccess = false;
+        if (productId.length == 1) {
+            removeSuccess = productService.removeById(productId);
+        } else {
+            List<Integer> productIds = Arrays.asList(productId);
+            removeSuccess = productService.removeBatchByIds(productIds);
+
+        }
         if (removeSuccess) {
             return JSON.toJSONString("删除该商品成功!");
         }
