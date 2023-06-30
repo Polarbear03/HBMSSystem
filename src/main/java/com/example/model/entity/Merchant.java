@@ -45,13 +45,16 @@ public class Merchant {
     @NotBlank(message = "请填写邮箱地址",groups = {EditGroup.class,AddGroup.class})
     @Email(message = "邮箱格式错误",groups = {EditGroup.class,AddGroup.class})
     private String email;
+
     @NotNull(message = "请正确填写营业执照编号",groups = {EditGroup.class, AddGroup.class})
     private String businessLicenseNumber;
+
     @Past(message = "日期出错，请正确填写注册日期",groups = {EditGroup.class, AddGroup.class})
     @NotNull(message = "日期出错，请正确填写注册日期",groups = {EditGroup.class, AddGroup.class})
     private Date registrationDate;
 
     @NotNull(message = "给店铺一点介绍才能吸引更多的顾客哦",groups = {EditGroup.class,AddGroup.class})
     private String introduction;
+
     private String avatar;
 }

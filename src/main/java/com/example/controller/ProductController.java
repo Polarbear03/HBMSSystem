@@ -21,7 +21,7 @@ public class ProductController {
 
     @GetMapping({"/list","/findProduct"})
     @Transactional(readOnly = true)
-    public JsonResponse<List<Product>> getAllProduct(@RequestBody Product product) {
+    public JsonResponse<List<Product>> getAllProduct(Product product) {
         QueryWrapper<Product> productQueryWrapper = null;
         boolean flag = false;
         if (product != null) {

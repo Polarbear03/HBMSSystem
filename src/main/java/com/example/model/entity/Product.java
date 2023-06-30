@@ -32,7 +32,7 @@ public class Product {
     private String description;
     private Double price;
     private Integer stock;
-    private static Date createDate = new Date();
-    private Date updateDate = new Date();
+    private Date createDate;
+    private Date updateDate;
     private String image;
 }
