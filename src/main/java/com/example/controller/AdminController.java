@@ -61,4 +61,12 @@ public class AdminController {
         }
         return JsonResponse.error("移除该管理员时出现错误，请稍后重试！");
     }
+
+    @GetMapping("/getAdminIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Admin>> getAdminIds() {
+        QueryWrapper<Admin> adminQueryWrapper = new QueryWrapper<>();
+        adminQueryWrapper.select("admin_id");
+        return JsonResponse.success(adminService.list(adminQueryWrapper));
+    }
 }

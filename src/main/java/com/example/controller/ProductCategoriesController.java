@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
+import com.example.model.entity.Order;
 import com.example.model.entity.ProductCategories;
 import com.example.model.entity.ProductCategories;
 import com.example.service.inter.ProductCategoriesService;
@@ -62,5 +63,12 @@ public class ProductCategoriesController {
         return JsonResponse.error("商品分类信息更新失败，请稍后重试！");
     }
 
+    @GetMapping("/getPccIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<ProductCategories>> getPccIds() {
+        QueryWrapper<ProductCategories> pccQueryWrapper = new QueryWrapper<>();
+        pccQueryWrapper.select("category_id");
+        return JsonResponse.success(productCategoriesService.list(pccQueryWrapper));
+    }
 
 }

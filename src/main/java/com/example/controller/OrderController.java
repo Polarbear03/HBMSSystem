@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
+import com.example.model.entity.Installer;
 import com.example.model.entity.Merchant;
 import com.example.model.entity.Order;
 import com.example.service.inter.OrderService;
@@ -60,5 +61,13 @@ public class OrderController {
             return JsonResponse.success("订单信息更新成功!");
         }
         return JsonResponse.error("订单信息更新失败，请稍后重试！");
+    }
+
+    @GetMapping("/getOdrIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Order>> getOdrIds() {
+        QueryWrapper<Order> odrQueryWrapper = new QueryWrapper<>();
+        odrQueryWrapper.select("order_id");
+        return JsonResponse.success(orderService.list(odrQueryWrapper));
     }
 }

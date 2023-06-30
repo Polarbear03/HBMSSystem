@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Customer;
 import com.example.model.entity.Installer;
+import com.example.model.entity.Merchant;
 import com.example.service.inter.InstallerService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,15 @@ public class InstallerController {
             return JsonResponse.success("安装员信息更新成功!");
         }
         return JsonResponse.error("安装员信息更新失败，请稍后重试！");
+    }
+
+
+    @GetMapping("/getInsIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Installer>> getInsIds() {
+        QueryWrapper<Installer> insQueryWrapper = new QueryWrapper<>();
+        insQueryWrapper.select("installer_id");
+        return JsonResponse.success(installerService.list(insQueryWrapper));
     }
 
 }

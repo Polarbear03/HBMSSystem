@@ -1,10 +1,9 @@
 package com.example.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
-import com.example.model.entity.Admin;
 import com.example.model.entity.Product;
+import com.example.model.entity.ProductCategories;
 import com.example.service.inter.ProductService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -63,5 +62,12 @@ public class ProductController {
         return JsonResponse.error("移除该商品时出现错误，请稍后重试！");
     }
 
+    @GetMapping("/getProIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Product>> getProIds() {
+        QueryWrapper<Product> proQueryWrapper = new QueryWrapper<>();
+        proQueryWrapper.select("product_id");
+        return JsonResponse.success(productService.list(proQueryWrapper));
+    }
 
 }

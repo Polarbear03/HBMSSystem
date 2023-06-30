@@ -63,4 +63,16 @@ public class MerchantController {
         return JsonResponse.error("商家信息更新失败，请稍后重试！");
     }
 
+    /**
+     * 获取所有的商家id，用于下拉框选取
+     * @return
+     */
+    @GetMapping("/getIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Merchant>> getMerIds() {
+        QueryWrapper<Merchant> integerQueryWrapper = new QueryWrapper<>();
+        integerQueryWrapper.select("merchant_id");
+        return JsonResponse.success(merchantService.list(integerQueryWrapper));
+    }
+
 }

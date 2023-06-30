@@ -65,4 +65,12 @@ public class CustomerController {
         return JsonResponse.error("顾客信息更新失败，请稍后重试！");
     }
 
+    @GetMapping("/getCusIds")
+    @Transactional(readOnly = true)
+    public JsonResponse<List<Customer>> getCusIds() {
+        QueryWrapper<Customer> cusQueryWrapper = new QueryWrapper<>();
+        cusQueryWrapper.select("customer_id");
+        return JsonResponse.success(customerService.list(cusQueryWrapper));
+    }
+
 }
