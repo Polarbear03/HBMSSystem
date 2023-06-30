@@ -8,10 +8,7 @@ import com.example.service.inter.ProductCategoriesService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,9 +35,9 @@ public class ProductCategoriesController {
     }
 
 
-    @PostMapping("/removePC")
-    public JsonResponse<String> removePC(ProductCategories ProductCategories) {
-        boolean removeSuccess = productCategoriesService.removeById(ProductCategories);
+    @RequestMapping(value = "/removePC/{pcId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> removePC(@PathVariable Integer pcId) {
+        boolean removeSuccess = productCategoriesService.removeById(pcId);
         if (removeSuccess) {
             return JsonResponse.success("商品分类信息删除成功");
         }

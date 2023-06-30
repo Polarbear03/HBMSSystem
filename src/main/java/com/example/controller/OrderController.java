@@ -8,10 +8,7 @@ import com.example.service.inter.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,9 +35,9 @@ public class OrderController {
     }
 
 
-    @PostMapping("/removeOrder")
-    public JsonResponse<String> removeOrder(Order order) {
-        boolean removeSuccess = orderService.removeById(order);
+    @PostMapping("/removeOrder/{orderId}")
+    public JsonResponse<String> removeOrder(@PathVariable Integer orderId) {
+        boolean removeSuccess = orderService.removeById(orderId);
         if (removeSuccess) {
             return JsonResponse.success("删除订单信息成功");
         }

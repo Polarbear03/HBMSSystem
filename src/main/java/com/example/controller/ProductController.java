@@ -54,9 +54,9 @@ public class ProductController {
         return JsonResponse.error("商品信息保存出错");
     }
 
-    @PostMapping("/removeProduct")
-    public JsonResponse<String> deleteProduct(Product product) {
-        boolean removeSuccess = productService.removeById(product);
+    @RequestMapping(value = "/removeProduct/{proId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> deleteProduct(@PathVariable Integer proId) {
+        boolean removeSuccess = productService.removeById(proId);
         if (removeSuccess) {
             return JsonResponse.success("移除该商品成功！");
         }

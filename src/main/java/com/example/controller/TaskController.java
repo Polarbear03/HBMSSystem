@@ -8,10 +8,7 @@ import com.example.service.inter.TaskService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,9 +35,9 @@ public class TaskController {
         return JsonResponse.success(taskService.list());
     }
 
-    @PostMapping("/removeTask")
-    public JsonResponse<String> removeTask(Task task) {
-        boolean removeSuccess = taskService.removeById(task);
+    @RequestMapping (value = "/removeTask/{tskId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> removeTask(@PathVariable Integer tskId) {
+        boolean removeSuccess = taskService.removeById(tskId);
         if (removeSuccess) {
             return JsonResponse.success("删除安装任务信息成功");
         }

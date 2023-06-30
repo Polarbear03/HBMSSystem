@@ -38,9 +38,9 @@ public class CustomerController {
         return JsonResponse.success(customerService.list());
     }
 
-    @PostMapping("/removeCustom")
-    public JsonResponse<String> removeCustom(Customer customer) {
-        boolean removeSuccess = customerService.removeById(customer);
+    @RequestMapping(value = "/removeCustom/{customerId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> removeCustom(@PathVariable Integer customerId) {
+        boolean removeSuccess = customerService.removeById(customerId);
         if (removeSuccess) {
             return JsonResponse.success("删除顾客信息成功");
         }

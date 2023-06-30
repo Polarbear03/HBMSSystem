@@ -8,10 +8,7 @@ import com.example.service.inter.InstallerService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,9 +34,9 @@ public class InstallerController {
         return JsonResponse.success(installerService.list());
     }
 
-    @PostMapping("/removeIns")
-    public JsonResponse<String> removeInstaller(Installer installer) {
-        boolean removeSuccess = installerService.removeById(installer);
+    @RequestMapping(value = "/removeIns/{installerId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> removeInstaller(@PathVariable Integer installerId) {
+        boolean removeSuccess = installerService.removeById(installerId);
         if (removeSuccess) {
             return JsonResponse.success("删除安装员信息成功");
         }

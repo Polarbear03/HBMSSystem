@@ -36,9 +36,9 @@ public class MerchantController {
     }
 
 
-    @PostMapping("/removeMer")
-    public JsonResponse<String> removeMerchant(Merchant merchant) {
-        boolean removeSuccess = merchantService.removeById(merchant);
+    @RequestMapping(value = "/removeMer/{merId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> removeMerchant(@PathVariable Integer merId) {
+        boolean removeSuccess = merchantService.removeById(merId);
         if (removeSuccess) {
             return JsonResponse.success("删除商家信息成功");
         }

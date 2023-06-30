@@ -53,9 +53,9 @@ public class AdminController {
         return JsonResponse.error("添加管理员信息失败，请稍后重试！");
     }
 
-    @PostMapping("/removeAdmin")
-    public JsonResponse<String> deleteAdmin(Admin admin) {
-        boolean removeSuccess = adminService.removeById(admin);
+    @RequestMapping(value = "/removeAdmin/{adminId}",method = RequestMethod.DELETE)
+    public JsonResponse<String> deleteAdmin(@PathVariable Integer adminId) {
+        boolean removeSuccess = adminService.removeById(adminId);
         if (removeSuccess) {
             return JsonResponse.success("移除该管理员成功！");
         }
