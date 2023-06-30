@@ -22,15 +22,25 @@ public class MerchantController {
 
     @GetMapping("/listMerchant")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Merchant>> getAllMerchant(Merchant merchant) {
-        QueryWrapper<Merchant> merchantQueryWrapper = null;
+    public JsonResponse<List<Merchant>> getAllMerchant(@RequestParam(value = "merchantId",required = false) Integer merchantId,
+                                                       @RequestParam(value = "fullName",required = false) String fullName,
+                                                       @RequestParam(value = "contact",required = false) String contact) {
+        QueryWrapper<Merchant> merQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (merchant != null) {
-            merchantQueryWrapper = new QueryWrapper<>(merchant);
+        if (merchantId != null) {
+            merQueryWrapper.eq("merchant_id",merchantId);
+            flag = true;
+        }
+        if (fullName != null && !fullName.isEmpty()) {
+            merQueryWrapper.likeLeft("full_name",fullName);
+            flag = true;
+        }
+        if (contact != null && !contact.isEmpty()) {
+            merQueryWrapper.likeLeft("contact",contact);
             flag = true;
         }
         if (flag) {
-            return JsonResponse.success(merchantService.list(merchantQueryWrapper));
+            return JsonResponse.success(merchantService.list(merQueryWrapper));
         }
         return JsonResponse.success(merchantService.list());
     }

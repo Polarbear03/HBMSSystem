@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
+import com.example.model.entity.Admin;
 import com.example.model.entity.Customer;
 import com.example.model.entity.Installer;
 import com.example.model.entity.Merchant;
@@ -22,11 +23,21 @@ public class InstallerController {
 
     @GetMapping("/listIns")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Installer>> getAllInstaller(Installer installer) {
-        QueryWrapper<Installer> installerQueryWrapper = null;
+    public JsonResponse<List<Installer>> getAllInstaller(@RequestParam(value = "installerId",required = false) Integer installerId,
+                                                         @RequestParam(value = "fullName",required = false) String fullName,
+                                                         @RequestParam(value = "contact",required = false) String contact) {
+        QueryWrapper<Installer> installerQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (installer != null) {
-            installerQueryWrapper = new QueryWrapper<>(installer);
+        if (installerId != null) {
+            installerQueryWrapper.eq("installer_id",installerId);
+            flag = true;
+        }
+        if (fullName != null && !fullName.isEmpty()) {
+            installerQueryWrapper.likeLeft("full_name",fullName);
+            flag = true;
+        }
+        if (contact != null && !contact.isEmpty()) {
+            installerQueryWrapper.likeLeft("contact",contact);
             flag = true;
         }
         if (flag) {

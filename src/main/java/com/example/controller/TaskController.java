@@ -23,12 +23,15 @@ public class TaskController {
 
     @GetMapping("/listTask")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Task>> getAllTask(Task task) {
-        QueryWrapper<Task> taskQueryWrapper = null;
+    public JsonResponse<List<Task>> getAllTask(@RequestParam(value = "taskId",required = false) Integer taskId,
+                                               @RequestParam(value = "taskDescription",required = false) String taskDescription) {
+        QueryWrapper<Task> taskQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (task != null) {
-            taskQueryWrapper = new QueryWrapper<>(task);
-            flag = true;
+        if (taskId != null) {
+            taskQueryWrapper.eq("task_id",taskId);
+        }
+        if (taskDescription != null && !taskDescription.isEmpty()) {
+            taskQueryWrapper.like("task_description",taskDescription);
         }
         if (flag) {
             return JsonResponse.success(taskService.list(taskQueryWrapper));

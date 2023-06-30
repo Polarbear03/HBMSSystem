@@ -5,6 +5,7 @@ import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Installer;
 import com.example.model.entity.Merchant;
 import com.example.model.entity.Order;
+import com.example.model.entity.Product;
 import com.example.service.inter.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +23,20 @@ public class OrderController {
 
     @GetMapping("/listOrder")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Order>> getAllOrder(Order order) {
-        QueryWrapper<Order> orderQueryWrapper = null;
+    public JsonResponse<List<Order>> getAllOrder(@RequestParam(value = "orderId",required = false) Integer orderId,
+                                                 @RequestParam(value = "orderStatus",required = false) String orderStatus) {
+        QueryWrapper<Order> ordQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (order != null) {
-            orderQueryWrapper = new QueryWrapper<>(order);
+        if (orderId != null) {
+            ordQueryWrapper.eq("order_id",orderId);
+            flag = true;
+        }
+        if (orderStatus != null && !orderStatus.isEmpty()) {
+            ordQueryWrapper.likeLeft("order_status",orderStatus);
             flag = true;
         }
         if (flag) {
-            return JsonResponse.success(orderService.list(orderQueryWrapper));
+            return JsonResponse.success(orderService.list(ordQueryWrapper));
         }
         return JsonResponse.success(orderService.list());
     }

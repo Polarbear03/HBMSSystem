@@ -22,12 +22,20 @@ public class ProductCategoriesController {
 
     @GetMapping("/listPC")
     @Transactional(readOnly = true)
-    public JsonResponse<List<ProductCategories>> getAllPC(ProductCategories productCategories) {
-        QueryWrapper<ProductCategories> productCategoriesQueryWrapper  = null;
+    public JsonResponse<List<ProductCategories>> getAllPC(@RequestParam(value = "categoryId",required = false) Integer categoryId,
+                                                          @RequestParam(value = "category_name",required = false) String categoryName,
+                                                          @RequestParam(value = "description",required = false) String description) {
+        QueryWrapper<ProductCategories> productCategoriesQueryWrapper  = new QueryWrapper<>();
         boolean flag = false;
-        if (productCategories != null) {
-            productCategoriesQueryWrapper = new QueryWrapper<>(productCategories);
+        if (categoryId != null) {
+            productCategoriesQueryWrapper.eq("category_id",categoryId);
             flag = true;
+        }
+        if (categoryName != null && !categoryName.isEmpty()) {
+            productCategoriesQueryWrapper.likeLeft("category_name",categoryName);
+        }
+        if (description != null && !description.isEmpty()) {
+            productCategoriesQueryWrapper.like("description",description);
         }
         if (flag) {
             return JsonResponse.success(productCategoriesService.list(productCategoriesQueryWrapper));

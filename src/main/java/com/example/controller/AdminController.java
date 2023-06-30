@@ -25,11 +25,21 @@ public class AdminController {
 
     @GetMapping("/adminList")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Admin>> getAllAdmin(@RequestBody Admin admin) {
-        QueryWrapper<Admin> adminQueryWrapper = null;
+    public JsonResponse<List<Admin>> getAllAdmin(@RequestParam(value = "adminId",required = false) Integer adminId,
+                                                 @RequestParam(value = "fullName",required = false) String fullName,
+                                                 @RequestParam(value = "contact",required = false) String contact) {
+        QueryWrapper<Admin> adminQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (admin != null) {
-            adminQueryWrapper = new QueryWrapper<>(admin);
+        if (adminId != null) {
+            adminQueryWrapper.eq("admin_id",adminId);
+            flag = true;
+        }
+        if (fullName != null && !fullName.isEmpty()) {
+            adminQueryWrapper.likeLeft("full_name",fullName);
+            flag = true;
+        }
+        if (contact != null && !contact.isEmpty()) {
+            adminQueryWrapper.likeLeft("contact",contact);
             flag = true;
         }
         if (flag) {

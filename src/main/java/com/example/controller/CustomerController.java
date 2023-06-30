@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
+import com.example.model.entity.Admin;
 import com.example.model.entity.Customer;
 import com.example.service.inter.CustomerService;
 import jakarta.annotation.Resource;
@@ -21,15 +22,25 @@ public class CustomerController {
 
     @GetMapping("/listCustom")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Customer>> getAllCustomer(Customer customer) {
-        QueryWrapper<Customer> customerQueryWrapper = null;
+    public JsonResponse<List<Customer>> getAllCustomer(@RequestParam(value = "customerId",required = false) Integer customerId,
+                                                       @RequestParam(value = "fullName",required = false) String fullName,
+                                                       @RequestParam(value = "contact",required = false) String contact) {
+        QueryWrapper<Customer> customQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (customer != null) {
-            customerQueryWrapper = new QueryWrapper<>(customer);
+        if (customerId != null) {
+            customQueryWrapper.eq("customer_id",customerId);
+            flag = true;
+        }
+        if (fullName != null && !fullName.isEmpty()) {
+            customQueryWrapper.likeLeft("full_name",fullName);
+            flag = true;
+        }
+        if (contact != null && !contact.isEmpty()) {
+            customQueryWrapper.likeLeft("contact",contact);
             flag = true;
         }
         if (flag) {
-            return JsonResponse.success(customerService.list(customerQueryWrapper));
+            return JsonResponse.success(customerService.list(customQueryWrapper));
         }
         return JsonResponse.success(customerService.list());
     }

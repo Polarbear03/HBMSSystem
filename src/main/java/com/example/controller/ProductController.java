@@ -21,15 +21,25 @@ public class ProductController {
 
     @GetMapping({"/list","/findProduct"})
     @Transactional(readOnly = true)
-    public JsonResponse<List<Product>> getAllProduct(Product product) {
-        QueryWrapper<Product> productQueryWrapper = null;
+    public JsonResponse<List<Product>> getAllProduct(@RequestParam(value = "orderId",required = false) Integer orderId,
+                                                     @RequestParam(value = "productName",required = false) String productName,
+                                                     @RequestParam(value = "description",required = false) String description) {
+        QueryWrapper<Product> proQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (product != null) {
-            productQueryWrapper = new QueryWrapper<>(product);
+        if (orderId != null) {
+            proQueryWrapper.eq("order_id",orderId);
+            flag = true;
+        }
+        if (productName != null && !productName.isEmpty()) {
+            proQueryWrapper.likeLeft("full_name",productName);
+            flag = true;
+        }
+        if (description != null && !description.isEmpty()) {
+            proQueryWrapper.like("description",description);
             flag = true;
         }
         if (flag) {
-            return JsonResponse.success(productService.list(productQueryWrapper));
+            return JsonResponse.success(productService.list(proQueryWrapper));
         }
         return JsonResponse.success(productService.list());
     }
