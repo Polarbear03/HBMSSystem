@@ -21,17 +21,17 @@ public class ProductController {
 
     @GetMapping({"/list","/findProduct"})
     @Transactional(readOnly = true)
-    public JsonResponse<List<Product>> getAllProduct(@RequestParam(value = "orderId",required = false) Integer orderId,
+    public JsonResponse<List<Product>> getAllProduct(@RequestParam(value = "productId",required = false) Integer productId,
                                                      @RequestParam(value = "productName",required = false) String productName,
                                                      @RequestParam(value = "description",required = false) String description) {
         QueryWrapper<Product> proQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
-        if (orderId != null) {
-            proQueryWrapper.eq("order_id",orderId);
+        if (productId != null) {
+            proQueryWrapper.eq("product_id",productId);
             flag = true;
         }
         if (productName != null && !productName.isEmpty()) {
-            proQueryWrapper.likeLeft("full_name",productName);
+            proQueryWrapper.likeLeft("product_name",productName);
             flag = true;
         }
         if (description != null && !description.isEmpty()) {
