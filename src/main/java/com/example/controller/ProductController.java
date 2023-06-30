@@ -3,7 +3,6 @@ package com.example.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Product;
-import com.example.model.entity.ProductCategories;
 import com.example.service.inter.ProductService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,7 @@ public class ProductController {
 
     @GetMapping({"/list","/findProduct"})
     @Transactional(readOnly = true)
-    public JsonResponse<List<Product>> getAllProduct(Product product) {
+    public JsonResponse<List<Product>> getAllProduct(@RequestBody Product product) {
         QueryWrapper<Product> productQueryWrapper = null;
         boolean flag = false;
         if (product != null) {
@@ -36,7 +35,7 @@ public class ProductController {
     }
 
     @PostMapping("/modifyProduct")
-    public JsonResponse<String> updateProduct(Product product) {
+    public JsonResponse<String> updateProduct(@RequestBody Product product) {
         boolean updateSuccess = productService.updateById(product);
         if (updateSuccess) {
             return JsonResponse.success("更新商品信息成功！");
@@ -45,7 +44,7 @@ public class ProductController {
     }
 
     @PostMapping("/saveProduct")
-    public JsonResponse<String> saveProduct(Product product) {
+    public JsonResponse<String> saveProduct(@RequestBody Product product) {
         boolean saveSuccess = productService.save(product);
         if (saveSuccess) {
             return JsonResponse.success("商品信息保存成功");

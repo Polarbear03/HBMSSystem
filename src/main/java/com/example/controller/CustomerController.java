@@ -1,10 +1,7 @@
 package com.example.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
-import com.example.model.dto.CustomerDto;
-import com.example.model.entity.Admin;
 import com.example.model.entity.Customer;
 import com.example.service.inter.CustomerService;
 import jakarta.annotation.Resource;
@@ -12,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

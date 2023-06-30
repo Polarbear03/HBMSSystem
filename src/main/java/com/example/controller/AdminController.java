@@ -5,10 +5,13 @@ package com.example.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Admin;
+import com.example.model.group.AddGroup;
+import com.example.model.group.EditGroup;
 import com.example.service.inter.AdminService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +25,7 @@ public class AdminController {
 
     @GetMapping("/adminList")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Admin>> getAllAdmin(Admin admin) {
+    public JsonResponse<List<Admin>> getAllAdmin(@RequestBody Admin admin) {
         QueryWrapper<Admin> adminQueryWrapper = null;
         boolean flag = false;
         if (admin != null) {
@@ -36,7 +39,7 @@ public class AdminController {
     }
 
     @PostMapping("/modifyAdmin")
-    public JsonResponse<String> updateAdmin(Admin admin) {
+    public JsonResponse<String> updateAdmin(@Validated(EditGroup.class) @RequestBody Admin admin) {
         boolean updateSuccess = adminService.updateById(admin);
         if (updateSuccess) {
             return JsonResponse.success("更新管理员信息成功！");
@@ -45,7 +48,7 @@ public class AdminController {
     }
 
     @PostMapping("/save")
-    public JsonResponse<String> saveAdmin(Admin admin) {
+    public JsonResponse<String> saveAdmin(@Validated(AddGroup.class) @RequestBody Admin admin) {
         boolean saveSuccess = adminService.save(admin);
         if (saveSuccess) {
             return JsonResponse.success("添加管理员信息成功！");
