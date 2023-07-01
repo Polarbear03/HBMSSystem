@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.mapper.PermissionMapper">
+
+    <select id="queryPermissionByUserId" resultMap="string">
+        select distinct
+            per.permission_description
+        from
+            user_role uro
+            inner join
+                    role_permissions rpe on uro.role_id = rpe.role_id
+            inner join
+                    permissions pmi on rpe.permisssion_id = pmi.permission_id
+        where
+            uro.user_id = #{userId}
+    </select>
+</mapper>
