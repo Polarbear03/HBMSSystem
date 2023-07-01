@@ -5,16 +5,23 @@
 
 <mapper namespace="com.example.dao.mapper.PermissionMapper">
 
-    <select id="queryPermissionByUserId" resultMap="string">
+    <select id="queryPermissionByUserId" resultType="string">
         select distinct
-            per.permission_description
+            pmi.permission_description
         from
             user_role uro
             inner join
-                    role_permissions rpe on uro.role_id = rpe.role_id
+            role_permissions rpe on uro.role_id = rpe.role_id
             inner join
-                    permissions pmi on rpe.permisssion_id = pmi.permission_id
+            permissions pmi on rpe.permission_id = pmi.permission_id
         where
             uro.user_id = #{userId}
+    </select>
+
+    <select id="queryAllByPermissionDescriptionStrings" resultType="string">
+        select
+            permission_description
+        from
+            permissions
     </select>
 </mapper>

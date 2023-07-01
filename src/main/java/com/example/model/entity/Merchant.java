@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -51,7 +52,7 @@ public class Merchant {
 
     @Past(message = "日期出错，请正确填写注册日期",groups = {EditGroup.class, AddGroup.class})
     @NotNull(message = "日期出错，请正确填写注册日期",groups = {EditGroup.class, AddGroup.class})
-    private Date registrationDate;
+    private Timestamp registrationDate;
 
     @NotNull(message = "给店铺一点介绍才能吸引更多的顾客哦",groups = {EditGroup.class,AddGroup.class})
     private String introduction;

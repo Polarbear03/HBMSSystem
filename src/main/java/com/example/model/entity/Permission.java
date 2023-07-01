@@ -18,5 +18,5 @@ public class Permission {
     private String permissionName;
     private String permissionDescription;
     private Integer status;
-    private Integer usable;
+    private Integer deleteFlag;
 }

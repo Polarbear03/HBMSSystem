@@ -20,20 +20,20 @@ public class JwtUtils {
    @Value("${my.secretKey}")
     private static String secret;
 
-    // 工具类，防止new对象
-    //private JwtUtils(){}
+    private JwtUtils(){}
 
     public static String createJwt(String userInfo, List<String> authList) {
-        Date issDate = new Date();  // 签发时间
-        Date expireDate = new Date(issDate.getTime() + 1000*60*60*2);       // 当前时间加上两个小时
+        Date issDate = new Date();
+        // 三天不过其
+        Date expireDate = new Date(issDate.getTime() + 1000*60*60*24*3);
         Map<String,Object> headerClaims = new HashMap<>();
-        headerClaims.put("alg","HS256");    // 这两项是jwt官方规定的头部
+        headerClaims.put("alg","HS256");
         headerClaims.put("typ","JWT");
         return JWT.create().withHeader(headerClaims)
-                .withIssuer("zhangsan")     // 设置签发人
-                .withIssuedAt(issDate)      // 签发时间
-                .withExpiresAt(expireDate)  // 过期时间
-                .withClaim("user_info",userInfo)    // 这三个是自定义的声明
+                .withIssuer("yunbowu")
+                .withIssuedAt(issDate)
+                .withExpiresAt(expireDate)
+                .withClaim("user_info",userInfo)    // 自定义声明
                 .withClaim("userAuth",authList)
                 .sign(Algorithm.HMAC256(secret));   // 使用HS256进行签名，使用secret作为密钥
     }

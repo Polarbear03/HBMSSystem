@@ -1,6 +1,7 @@
 package com.example.config.handler;
 
 import com.example.model.bean.HttpResult;
+import com.example.model.bean.JsonResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -21,21 +22,14 @@ import java.io.PrintWriter;
 @Component
 @Slf4j
 public class AppLogoutSuccessHandler implements LogoutSuccessHandler {
-    @Resource
-    private ObjectMapper objectMapper;
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-        HttpResult httpResult = HttpResult.builder()
-                .code(1)
-                .msg("退出成功")
-                .build();
-        String responseJson = objectMapper.writeValueAsString(httpResult);
-
+        JsonResponse<String> error = JsonResponse.error(200, "退出成功", "退出系统成功");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charSet=UTF-8");
         PrintWriter writer = response.getWriter();
-        writer.println(responseJson);
+        writer.println(error);
         writer.flush();
     }
 }
+

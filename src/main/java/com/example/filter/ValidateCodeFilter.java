@@ -1,5 +1,6 @@
 package com.example.filter;
 
+import com.example.model.bean.JsonResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 @Slf4j
@@ -17,31 +19,29 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        if (!requestURI.equals("/login/doLogin")) {
+        if (!requestURI.equals("/setter/login")) {
             filterChain.doFilter(request,response);
         } else {
-            validataCode(request,response,filterChain);
+            validateCode(request,response,filterChain);
         }
     }
 
-    private void validataCode(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    private void validateCode(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String code = request.getParameter("code");
         String captchaCode = (String) request.getSession().getAttribute("CaptchaCode");
-        request.getSession().removeAttribute("captchaCodeErrorMsg");
-        
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+
         if (!StringUtils.hasText(code)) {
-            request.getSession().setAttribute("captchaCodeErrorMsg","验证码不能为空");
-            response.sendRedirect("/toLogin");
+            writer.print(JsonResponse.error(440,"错误","验证码不能为空"));
             return;
         }
         if (!StringUtils.hasText(captchaCode)) {
-            request.getSession().setAttribute("captchaCodeErrorMsg","验证码错误");
-            response.sendRedirect("/toLogin");
+            writer.print(JsonResponse.error(442,"错误","验证码错误"));
             return;
         }
         if (!code.equalsIgnoreCase(captchaCode)) {
-            request.getSession().setAttribute("captchaCodeErrorMsg","验证码输入错误");
-            response.sendRedirect("/toLogin");
+            writer.print(JsonResponse.error(440,"错误","验证码输入错误"));
             return;
         }
         filterChain.doFilter(request,response);

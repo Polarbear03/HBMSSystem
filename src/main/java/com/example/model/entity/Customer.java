@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -52,11 +53,11 @@ public class Customer {
 
     @Past(message = "日期出错，请正确填写你的出生日期",groups = {EditGroup.class, AddGroup.class})
     @NotNull(message = "日期出错，请正确填写你的出生日期",groups = {EditGroup.class, AddGroup.class})
-    private Date dateOfBirth;
+    private Timestamp dateOfBirth;
 
     @Past(message = "日期出错，请正确填写注册日期",groups = {EditGroup.class, AddGroup.class})
     @NotNull(message = "日期出错，请正确填写注册日期",groups = {EditGroup.class, AddGroup.class})
-    private Date registrationDate;
+    private Timestamp registrationDate;
     private String avatar;
 
 }

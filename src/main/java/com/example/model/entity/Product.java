@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -32,7 +33,7 @@ public class Product {
     private String description;
     private Double price;
     private Integer stock;
-    private Date createDate;
-    private Date updateDate;
+    private Timestamp createDate;
+    private Timestamp updateDate;
     private String image;
 }

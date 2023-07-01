@@ -1,6 +1,6 @@
 package com.example.config.handler;
 
-import com.example.model.bean.HttpResult;
+import com.example.model.bean.JsonResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -20,19 +20,12 @@ import java.io.PrintWriter;
 @Component
 @Slf4j
 public class AuthenticationFailHandler implements AuthenticationFailureHandler {
-    @Resource
-    private ObjectMapper objectMapper;
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        HttpResult httpResult = HttpResult.builder()
-                .code(0)
-                .msg("登录失败")
-                .build();
-        String result = objectMapper.writeValueAsString(httpResult);
-
+        JsonResponse<String> error = JsonResponse.error(450, "token为空", "请返回重新登录");
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter writer = response.getWriter();
-        writer.println(result);
+        writer.println(error);
         writer.flush();
     }
 }

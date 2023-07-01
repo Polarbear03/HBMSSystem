@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -28,6 +29,6 @@ public class ProductCategories {
     private Integer parentCategoryId;
     @NotBlank(message = "给商品分类加一点描述吧",groups = {EditGroup.class, AddGroup.class})
     private String description;
-    private Date createDate;
-    private Date updateDate;
+    private Timestamp createDate;
+    private Timestamp updateDate;
 }

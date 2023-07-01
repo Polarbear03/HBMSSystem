@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class Order {
     private Integer customerId;
     private Integer merchantId;
     private Integer productId;
-    private Date orderDate;
+    private Timestamp orderDate;
     private String orderStatus;
     private String paymentStatus;
     private Double totalAmount;

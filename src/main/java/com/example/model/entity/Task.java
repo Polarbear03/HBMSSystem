@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -30,6 +31,6 @@ public class Task {
     private String taskDescription;
     @NotBlank(message = "任务状态不知道安装个锤子",groups = {EditGroup.class, AddGroup.class})
     private String taskStatus;
-    private Date createDate;
-    private Date dueDate;
+    private Timestamp createDate;
+    private Timestamp dueDate;
 }

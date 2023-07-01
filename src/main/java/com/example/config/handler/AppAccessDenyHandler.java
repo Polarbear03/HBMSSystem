@@ -1,6 +1,7 @@
 package com.example.config.handler;
 
 import com.example.model.bean.HttpResult;
+import com.example.model.bean.JsonResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -20,21 +21,14 @@ import java.io.PrintWriter;
 @Component
 @Slf4j
 public class AppAccessDenyHandler implements AccessDeniedHandler {
-
-    @Resource
-    private ObjectMapper objectMapper;
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        HttpResult httpResult = HttpResult.builder()
-                .code(1)
-                .msg("你没有权限访问该资源")
-                .build();
-        String responseJson = objectMapper.writeValueAsString(httpResult);
-
+        JsonResponse<String> error = JsonResponse.error(403, "没有权限访问", "请返回重新登录");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charSet=UTF-8");
         PrintWriter writer = response.getWriter();
-        writer.println(responseJson);
+        writer.println(error);
         writer.flush();
     }
 }
+

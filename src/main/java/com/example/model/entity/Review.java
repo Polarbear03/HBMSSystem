@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -35,5 +36,5 @@ public class Review {
     @NotNull(message = "不给评分评个锤子",groups = {EditGroup.class, AddGroup.class})
     private Integer rating;
 
-    private Date reviewDate = new Date();
+    private Timestamp reviewDate;
 }

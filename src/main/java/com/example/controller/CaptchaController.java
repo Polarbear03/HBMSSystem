@@ -14,15 +14,19 @@ import java.io.IOException;
 @Controller
 @Slf4j
 public class CaptchaController {
+
     @GetMapping("/code/getCaptcha")
     public void getCaptcha(HttpServletRequest request, HttpServletResponse servletResponse) throws IOException {
-        // 创建出一个图片验证码
-        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(200,100,4,20);
-        // 获取验证码
+        servletResponse.setContentType("image/png");
+        CircleCaptcha circleCaptcha = generateCaptcha(request);
+        ImageIO.write(circleCaptcha.getImage(),"png",servletResponse.getOutputStream());
+    }
+
+    public static CircleCaptcha generateCaptcha(HttpServletRequest request) {
+        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
         String code = circleCaptcha.getCode();
         log.info("生成的图片验证码为：" + code);
-        // 将生成的验证码存储到session当中
-        request.getSession().setAttribute("CaptchaCode",code);
-        ImageIO.write(circleCaptcha.getImage(),"png",servletResponse.getOutputStream());
+        request.getSession().setAttribute("CaptchaCode", code);
+        return circleCaptcha;
     }
 }
