@@ -21,7 +21,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping({"/list", "/findProduct"})
-    @PreAuthorize("hasAnyAuthority('/product/**','product:query')")
+    //@PreAuthorize("hasAnyAuthority('/product/**','product:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Product>> getAllProduct(@RequestParam(value = "productId", required = false) Integer productId,
                                                      @RequestParam(value = "productName", required = false) String productName,

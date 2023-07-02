@@ -25,7 +25,7 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/listReview")
-    @PreAuthorize("hasAnyAuthority('/review/**','review:query')")
+    //@PreAuthorize("hasAnyAuthority('/review/**','review:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Review>> getAllReview(@RequestParam(value = "reviewId", required = false) Integer reviewId,
                                                    @RequestParam(value = "reviewContent", required = false) String reviewContent) {

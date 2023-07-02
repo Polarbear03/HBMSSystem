@@ -22,7 +22,7 @@ public class ProductCategoriesController {
     private ProductCategoriesService productCategoriesService;
 
     @GetMapping("/listPC")
-    @PreAuthorize("hasAnyAuthority('/pc/**','pc:query')")
+    //@PreAuthorize("hasAnyAuthority('/pc/**','pc:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<ProductCategories>> getAllPC(@RequestParam(value = "categoryId", required = false) Integer categoryId,
                                                           @RequestParam(value = "category_name", required = false) String categoryName,
