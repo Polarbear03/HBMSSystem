@@ -9,6 +9,7 @@ import com.example.model.entity.Product;
 import com.example.service.inter.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,17 +23,18 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/listOrder")
+    @PreAuthorize("hasAnyAuthority('/order/**','order:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Order>> getAllOrder(@RequestParam(value = "orderId",required = false) Integer orderId,
-                                                 @RequestParam(value = "orderStatus",required = false) String orderStatus) {
+    public JsonResponse<List<Order>> getAllOrder(@RequestParam(value = "orderId", required = false) Integer orderId,
+                                                 @RequestParam(value = "orderStatus", required = false) String orderStatus) {
         QueryWrapper<Order> ordQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (orderId != null) {
-            ordQueryWrapper.eq("order_id",orderId);
+            ordQueryWrapper.eq("order_id", orderId);
             flag = true;
         }
         if (orderStatus != null && !orderStatus.isEmpty()) {
-            ordQueryWrapper.likeLeft("order_status",orderStatus);
+            ordQueryWrapper.likeLeft("order_status", orderStatus);
             flag = true;
         }
         if (flag) {
@@ -43,6 +45,7 @@ public class OrderController {
 
 
     @PostMapping("/removeOrder/{orderId}")
+    @PreAuthorize("hasAnyAuthority('/order/**','order:delete')")
     public JsonResponse<String> removeOrder(@PathVariable Integer orderId) {
         boolean removeSuccess = orderService.removeById(orderId);
         if (removeSuccess) {
@@ -52,6 +55,7 @@ public class OrderController {
     }
 
     @PostMapping("/saveOrder")
+    @PreAuthorize("hasAnyAuthority('/order/**','order:add')")
     public JsonResponse<String> saveOrder(Order order) {
         boolean saveSuccess = orderService.save(order);
         if (saveSuccess) {
@@ -61,6 +65,7 @@ public class OrderController {
     }
 
     @PostMapping("/updateOrder")
+    @PreAuthorize("hasAnyAuthority('/order/**','order:update')")
     public JsonResponse<String> updateOrder(Order order) {
         boolean updateSuccess = orderService.updateById(order);
         if (updateSuccess) {
@@ -70,6 +75,7 @@ public class OrderController {
     }
 
     @GetMapping("/getOdrIds")
+    @PreAuthorize("hasAnyAuthority('/order/**','order:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Order>> getOdrIds() {
         QueryWrapper<Order> odrQueryWrapper = new QueryWrapper<>();

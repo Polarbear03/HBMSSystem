@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 public class AuthenticationFailHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        JsonResponse<String> error = JsonResponse.error(450, "token为空", "请返回重新登录");
+        JsonResponse<String> error = JsonResponse.error(456, "认证失败", "请返回重新登录");
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter writer = response.getWriter();
         writer.println(error);

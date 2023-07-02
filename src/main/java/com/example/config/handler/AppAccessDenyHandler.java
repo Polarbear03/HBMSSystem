@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 public class AppAccessDenyHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        JsonResponse<String> error = JsonResponse.error(403, "没有权限访问", "请返回重新登录");
+        JsonResponse<String> error = JsonResponse.error(403, "没有权限访问", "请联系系统管理员");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charSet=UTF-8");
         PrintWriter writer = response.getWriter();

@@ -8,6 +8,7 @@ import com.example.model.entity.ProductCategories;
 import com.example.service.inter.ProductCategoriesService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,21 +22,22 @@ public class ProductCategoriesController {
     private ProductCategoriesService productCategoriesService;
 
     @GetMapping("/listPC")
+    @PreAuthorize("hasAnyAuthority('/pc/**','pc:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<ProductCategories>> getAllPC(@RequestParam(value = "categoryId",required = false) Integer categoryId,
-                                                          @RequestParam(value = "category_name",required = false) String categoryName,
-                                                          @RequestParam(value = "description",required = false) String description) {
-        QueryWrapper<ProductCategories> productCategoriesQueryWrapper  = new QueryWrapper<>();
+    public JsonResponse<List<ProductCategories>> getAllPC(@RequestParam(value = "categoryId", required = false) Integer categoryId,
+                                                          @RequestParam(value = "category_name", required = false) String categoryName,
+                                                          @RequestParam(value = "description", required = false) String description) {
+        QueryWrapper<ProductCategories> productCategoriesQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (categoryId != null) {
-            productCategoriesQueryWrapper.eq("category_id",categoryId);
+            productCategoriesQueryWrapper.eq("category_id", categoryId);
             flag = true;
         }
         if (categoryName != null && !categoryName.isEmpty()) {
-            productCategoriesQueryWrapper.likeLeft("category_name",categoryName);
+            productCategoriesQueryWrapper.likeLeft("category_name", categoryName);
         }
         if (description != null && !description.isEmpty()) {
-            productCategoriesQueryWrapper.like("description",description);
+            productCategoriesQueryWrapper.like("description", description);
         }
         if (flag) {
             return JsonResponse.success(productCategoriesService.list(productCategoriesQueryWrapper));
@@ -44,7 +46,8 @@ public class ProductCategoriesController {
     }
 
 
-    @RequestMapping(value = "/removePC/{pcId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removePC/{pcId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAnyAuthority('/pc/**','pc:delete')")
     public JsonResponse<String> removePC(@PathVariable Integer pcId) {
         boolean removeSuccess = productCategoriesService.removeById(pcId);
         if (removeSuccess) {
@@ -54,6 +57,7 @@ public class ProductCategoriesController {
     }
 
     @PostMapping("/savePC")
+    @PreAuthorize("hasAnyAuthority('/pc/**','pc:add')")
     public JsonResponse<String> savePCer(ProductCategories ProductCategories) {
         boolean saveSuccess = productCategoriesService.save(ProductCategories);
         if (saveSuccess) {
@@ -63,6 +67,7 @@ public class ProductCategoriesController {
     }
 
     @PostMapping("/updatePC")
+    @PreAuthorize("hasAnyAuthority('/pc/**','pc:update')")
     public JsonResponse<String> updatePCer(ProductCategories ProductCategories) {
         boolean updateSuccess = productCategoriesService.updateById(ProductCategories);
         if (updateSuccess) {
@@ -72,6 +77,7 @@ public class ProductCategoriesController {
     }
 
     @GetMapping("/getPccIds")
+    @PreAuthorize("hasAnyAuthority('/pc/**','pc:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<ProductCategories>> getPccIds() {
         QueryWrapper<ProductCategories> pccQueryWrapper = new QueryWrapper<>();

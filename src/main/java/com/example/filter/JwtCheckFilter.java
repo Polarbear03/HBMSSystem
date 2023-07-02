@@ -28,11 +28,12 @@ public class JwtCheckFilter extends OncePerRequestFilter {
 
     @Resource
     private ObjectMapper objectMapper;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         if (requestURI.equals("/setter/login") || requestURI.equals("/setter/code/getCaptcha")) {
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
         } else {
             // 获取请求头中的token，如果为空，则输出错误信息
             String authorization = request.getHeader("Authorization");

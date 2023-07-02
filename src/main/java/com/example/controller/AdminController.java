@@ -1,7 +1,6 @@
 package com.example.controller;
 
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Admin;
@@ -25,22 +24,23 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/adminList")
+    @PreAuthorize("hasAnyAuthority('admin:query','/admin/**')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Admin>> getAllAdmin(@RequestParam(value = "adminId",required = false) Integer adminId,
-                                                 @RequestParam(value = "fullName",required = false) String fullName,
-                                                 @RequestParam(value = "contact",required = false) String contact) {
+    public JsonResponse<List<Admin>> getAllAdmin(@RequestParam(value = "adminId", required = false) Integer adminId,
+                                                 @RequestParam(value = "fullName", required = false) String fullName,
+                                                 @RequestParam(value = "contact", required = false) String contact) {
         QueryWrapper<Admin> adminQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (adminId != null) {
-            adminQueryWrapper.eq("admin_id",adminId);
+            adminQueryWrapper.eq("admin_id", adminId);
             flag = true;
         }
         if (fullName != null && !fullName.isEmpty()) {
-            adminQueryWrapper.likeLeft("full_name",fullName);
+            adminQueryWrapper.likeLeft("full_name", fullName);
             flag = true;
         }
         if (contact != null && !contact.isEmpty()) {
-            adminQueryWrapper.likeLeft("contact",contact);
+            adminQueryWrapper.likeLeft("contact", contact);
             flag = true;
         }
         if (flag) {
@@ -50,6 +50,7 @@ public class AdminController {
     }
 
     @PostMapping("/modifyAdmin")
+    @PreAuthorize("hasAnyAuthority('admin:update','/admin/**')")
     public JsonResponse<String> updateAdmin(@Validated(EditGroup.class) @RequestBody Admin admin) {
         boolean updateSuccess = adminService.updateById(admin);
         if (updateSuccess) {
@@ -59,6 +60,7 @@ public class AdminController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('admin:add','/admin/**')")
     public JsonResponse<String> saveAdmin(@Validated(AddGroup.class) @RequestBody Admin admin) {
         boolean saveSuccess = adminService.save(admin);
         if (saveSuccess) {
@@ -67,7 +69,8 @@ public class AdminController {
         return JsonResponse.error("添加管理员信息失败，请稍后重试！");
     }
 
-    @RequestMapping(value = "/removeAdmin/{adminId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeAdmin/{adminId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAnyAuthority('admin:delete','/admin/**')")
     public JsonResponse<String> deleteAdmin(@PathVariable Integer adminId) {
         boolean removeSuccess = adminService.removeById(adminId);
         if (removeSuccess) {
@@ -77,6 +80,7 @@ public class AdminController {
     }
 
     @GetMapping("/getAdminIds")
+    @PreAuthorize("hasAnyAuthority('admin:query','/admin/**')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Admin>> getAdminIds() {
         QueryWrapper<Admin> adminQueryWrapper = new QueryWrapper<>();

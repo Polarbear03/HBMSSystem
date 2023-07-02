@@ -17,24 +17,23 @@ import java.util.Map;
 @Slf4j
 public class JwtUtils {
 
-   @Value("${my.secretKey}")
-    private static String secret;
+    private static final String secret = "xiaoading03302116";
 
-    private JwtUtils(){}
+    private JwtUtils() {
+    }
 
     public static String createJwt(String userInfo, List<String> authList) {
         Date issDate = new Date();
-        // 三天不过其
-        Date expireDate = new Date(issDate.getTime() + 1000*60*60*24*3);
-        Map<String,Object> headerClaims = new HashMap<>();
-        headerClaims.put("alg","HS256");
-        headerClaims.put("typ","JWT");
+        Date expireDate = new Date(issDate.getTime() + 1000 * 60 * 60 * 24 * 3);
+        Map<String, Object> headerClaims = new HashMap<>();
+        headerClaims.put("alg", "HS256");
+        headerClaims.put("typ", "JWT");
         return JWT.create().withHeader(headerClaims)
                 .withIssuer("yunbowu")
                 .withIssuedAt(issDate)
                 .withExpiresAt(expireDate)
-                .withClaim("user_info",userInfo)    // 自定义声明
-                .withClaim("userAuth",authList)
+                .withClaim("user_info", userInfo)    // 自定义声明
+                .withClaim("userAuth", authList)
                 .sign(Algorithm.HMAC256(secret));   // 使用HS256进行签名，使用secret作为密钥
     }
 
@@ -81,7 +80,6 @@ public class JwtUtils {
         }
 
     }
-
 
 
 }

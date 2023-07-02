@@ -14,14 +14,15 @@ public class JsonResponse<T> {
     private String msg;
     private T data;
 
-    public static<T> JsonResponse<T> success(T data){
-        return new JsonResponse<>(Result.SUCCESS.code,Result.SUCCESS.msg,data);
-    }
-    public static<T> JsonResponse<T> error(T data){
-        return new JsonResponse<>(Result.ERROR.code,Result.ERROR.msg,data);
+    public static <T> JsonResponse<T> success(T data) {
+        return new JsonResponse<>(Result.SUCCESS.code, Result.SUCCESS.msg, data);
     }
 
-    public static<T> JsonResponse<T> error(int code, String msg, T data){
+    public static <T> JsonResponse<T> error(T data) {
+        return new JsonResponse<>(Result.ERROR.code, Result.ERROR.msg, data);
+    }
+
+    public static <T> JsonResponse<T> error(int code, String msg, T data) {
         return new JsonResponse<>(code, msg, data);
     }
 }

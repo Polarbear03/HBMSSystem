@@ -12,14 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -45,6 +43,7 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         authorities.forEach(authoritie ->{
             auths.add(authoritie.toString());
         });
+        log.info(auths.toString());
 
         String jwtToken = JwtUtils.createJwt(stringUserInfo, auths);
         JsonResponse<String> jwtSuccess = JsonResponse.success(jwtToken);

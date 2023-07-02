@@ -5,12 +5,17 @@ import com.example.model.entity.Permission;
 import com.example.model.entity.User;
 import com.example.service.inter.UserService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest
+@Slf4j
 class HbmsSystemApplicationTests {
 
     @Resource
@@ -37,9 +42,10 @@ class HbmsSystemApplicationTests {
 
     @Test
     void user() {
+        BCryptPasswordEncoder cryptPasswordEncoder = new BCryptPasswordEncoder();
         User user = User.builder()
-                .username("zhangsan")
-                .password("123456")
+                .username("wangwu")
+                .password(cryptPasswordEncoder.encode("123456"))
                 .fullName("zhangsan")
                 .contact("13639234704")
                 .address("山东省淄博市")
@@ -50,4 +56,14 @@ class HbmsSystemApplicationTests {
         System.out.println(save ? "插入成功" : "插入失败");
     }
 
+
+    @Test
+    void SecurityBea() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode("123456");
+        System.out.println(encode);
+        // 进行密码匹配，参数一：明文； 参数2：密码
+        boolean matches = bCryptPasswordEncoder.matches("123456", "$10$NURHQtGm64Npcf0rLlb2f.tBcp8QT0eiQtv73vfKKDjpxZYqJhv6S");
+        assertTrue(matches);
+    }
 }

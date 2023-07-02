@@ -7,6 +7,7 @@ import com.example.model.entity.Merchant;
 import com.example.service.inter.MerchantService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,22 +22,23 @@ public class MerchantController {
     private MerchantService merchantService;
 
     @GetMapping("/listMerchant")
+    @PreAuthorize("hasAnyAuthority('/merchant/**','merchant:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Merchant>> getAllMerchant(@RequestParam(value = "merchantId",required = false) Integer merchantId,
-                                                       @RequestParam(value = "fullName",required = false) String fullName,
-                                                       @RequestParam(value = "contact",required = false) String contact) {
+    public JsonResponse<List<Merchant>> getAllMerchant(@RequestParam(value = "merchantId", required = false) Integer merchantId,
+                                                       @RequestParam(value = "fullName", required = false) String fullName,
+                                                       @RequestParam(value = "contact", required = false) String contact) {
         QueryWrapper<Merchant> merQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (merchantId != null) {
-            merQueryWrapper.eq("merchant_id",merchantId);
+            merQueryWrapper.eq("merchant_id", merchantId);
             flag = true;
         }
         if (fullName != null && !fullName.isEmpty()) {
-            merQueryWrapper.likeLeft("full_name",fullName);
+            merQueryWrapper.likeLeft("full_name", fullName);
             flag = true;
         }
         if (contact != null && !contact.isEmpty()) {
-            merQueryWrapper.likeLeft("contact",contact);
+            merQueryWrapper.likeLeft("contact", contact);
             flag = true;
         }
         if (flag) {
@@ -46,7 +48,8 @@ public class MerchantController {
     }
 
 
-    @RequestMapping(value = "/removeMer/{merId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeMer/{merId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAnyAuthority('/merchant/**','merchant:delete')")
     public JsonResponse<String> removeMerchant(@PathVariable Integer merId) {
         boolean removeSuccess = merchantService.removeById(merId);
         if (removeSuccess) {
@@ -56,6 +59,7 @@ public class MerchantController {
     }
 
     @PostMapping("/saveMer")
+    @PreAuthorize("hasAnyAuthority('/merchant/**','merchant:add')")
     public JsonResponse<String> saveMerchant(Merchant merchant) {
         boolean saveSuccess = merchantService.save(merchant);
         if (saveSuccess) {
@@ -65,6 +69,7 @@ public class MerchantController {
     }
 
     @PostMapping("/updateMer")
+    @PreAuthorize("hasAnyAuthority('/merchant/**','merchant:update')")
     public JsonResponse<String> updateMerchant(Merchant merchant) {
         boolean updateSuccess = merchantService.updateById(merchant);
         if (updateSuccess) {
@@ -75,9 +80,11 @@ public class MerchantController {
 
     /**
      * 获取所有的商家id，用于下拉框选取
+     *
      * @return
      */
     @GetMapping("/getIds")
+    @PreAuthorize("hasAnyAuthority('/merchant/**','merchant:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Merchant>> getMerIds() {
         QueryWrapper<Merchant> integerQueryWrapper = new QueryWrapper<>();

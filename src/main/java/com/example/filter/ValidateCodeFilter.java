@@ -20,9 +20,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         if (!requestURI.equals("/setter/login")) {
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
         } else {
-            validateCode(request,response,filterChain);
+            validateCode(request, response, filterChain);
         }
     }
 
@@ -33,17 +33,17 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         PrintWriter writer = response.getWriter();
 
         if (!StringUtils.hasText(code)) {
-            writer.print(JsonResponse.error(440,"错误","验证码不能为空"));
+            writer.print(JsonResponse.error(440, "错误", "验证码不能为空"));
             return;
         }
         if (!StringUtils.hasText(captchaCode)) {
-            writer.print(JsonResponse.error(442,"错误","验证码错误"));
+            writer.print(JsonResponse.error(442, "错误", "验证码错误"));
             return;
         }
         if (!code.equalsIgnoreCase(captchaCode)) {
-            writer.print(JsonResponse.error(440,"错误","验证码输入错误"));
+            writer.print(JsonResponse.error(444, "错误", "验证码输入错误"));
             return;
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

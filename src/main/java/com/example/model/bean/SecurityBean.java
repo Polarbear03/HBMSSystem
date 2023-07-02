@@ -1,5 +1,6 @@
 package com.example.model.bean;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import com.example.model.entity.User;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 public class SecurityBean implements UserDetails {
 
     private final User user;
@@ -23,6 +25,7 @@ public class SecurityBean implements UserDetails {
 
     /**
      * 设置权限的List的set方法
+     *
      * @param authorities
      */
     public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
@@ -31,6 +34,7 @@ public class SecurityBean implements UserDetails {
 
     /**
      * 获取用户的信息
+     *
      * @return
      */
     public User getUser() {
@@ -72,7 +76,7 @@ public class SecurityBean implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getEnable().equals(1);
+        return user.getEnabled().equals(1);
     }
 }
 

@@ -9,6 +9,7 @@ import com.example.model.group.EditGroup;
 import com.example.service.inter.ReviewService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +25,18 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/listReview")
+    @PreAuthorize("hasAnyAuthority('/review/**','review:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Review>> getAllReview(@RequestParam(value = "reviewId",required = false) Integer reviewId,
-                                                   @RequestParam(value = "reviewContent",required = false) String reviewContent) {
+    public JsonResponse<List<Review>> getAllReview(@RequestParam(value = "reviewId", required = false) Integer reviewId,
+                                                   @RequestParam(value = "reviewContent", required = false) String reviewContent) {
         QueryWrapper<Review> queryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (reviewId != null) {
-            queryWrapper.eq("review_id",reviewId);
+            queryWrapper.eq("review_id", reviewId);
             flag = true;
         }
         if (reviewContent != null && !reviewContent.isEmpty()) {
-            queryWrapper.like("review_content",reviewContent);
+            queryWrapper.like("review_content", reviewContent);
         }
         if (flag) {
             return JsonResponse.success(reviewService.list(queryWrapper));
@@ -43,6 +45,7 @@ public class ReviewController {
     }
 
     @PostMapping("/modifyRev")
+    @PreAuthorize("hasAnyAuthority('/review/**','review:update')")
     public JsonResponse<String> updateAdmin(@Validated(EditGroup.class) @RequestBody Review review) {
         boolean updateSuccess = reviewService.updateById(review);
         if (updateSuccess) {
@@ -52,6 +55,7 @@ public class ReviewController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('/review/**','review:add')")
     public JsonResponse<String> saveRev(@Validated(AddGroup.class) @RequestBody Review review) {
         boolean saveSuccess = reviewService.save(review);
         if (saveSuccess) {
@@ -60,7 +64,8 @@ public class ReviewController {
         return JsonResponse.error("评论失败，请稍后重试！");
     }
 
-    @RequestMapping(value = "/removeRev/{revId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeRev/{revId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAnyAuthority('/review/**','review:delete')")
     public JsonResponse<String> deleteRev(@PathVariable Integer revId) {
         boolean removeSuccess = reviewService.removeById(revId);
         if (removeSuccess) {
@@ -70,6 +75,7 @@ public class ReviewController {
     }
 
     @GetMapping("/getRevIds")
+    @PreAuthorize("hasAnyAuthority('/review/**','review:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Review>> getRevIds() {
         QueryWrapper<Review> revQueryWrapper = new QueryWrapper<>();

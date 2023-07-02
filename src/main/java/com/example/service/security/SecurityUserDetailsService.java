@@ -31,9 +31,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
         if (username == null) {
             throw new UsernameNotFoundException("该用户未找到");
         }
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("username", username);
-        User user = userService.getOne(userQueryWrapper);
+        User user = userService.getUserByUserName(username);
 
         // 用户权限集合
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();

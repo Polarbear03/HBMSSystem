@@ -18,15 +18,9 @@ public class CaptchaController {
     @GetMapping("/code/getCaptcha")
     public void getCaptcha(HttpServletRequest request, HttpServletResponse servletResponse) throws IOException {
         servletResponse.setContentType("image/png");
-        CircleCaptcha circleCaptcha = generateCaptcha(request);
-        ImageIO.write(circleCaptcha.getImage(),"png",servletResponse.getOutputStream());
-    }
-
-    public static CircleCaptcha generateCaptcha(HttpServletRequest request) {
-        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
+        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(200,100,4,20);
         String code = circleCaptcha.getCode();
-        log.info("生成的图片验证码为：" + code);
-        request.getSession().setAttribute("CaptchaCode", code);
-        return circleCaptcha;
+        request.getSession().setAttribute("CaptchaCode",code);
+        ImageIO.write(circleCaptcha.getImage(),"png",servletResponse.getOutputStream());
     }
 }

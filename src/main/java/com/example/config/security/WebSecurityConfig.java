@@ -4,7 +4,6 @@ import com.example.config.handler.AppAccessDenyHandler;
 import com.example.config.handler.AppLogoutSuccessHandler;
 import com.example.config.handler.AuthenticationFailHandler;
 import com.example.config.handler.AuthenticationSuccessHandler;
-import com.example.filter.CaptchaFilter;
 import com.example.filter.JwtCheckFilter;
 import com.example.filter.ValidateCodeFilter;
 import jakarta.annotation.Resource;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -36,17 +34,16 @@ public class WebSecurityConfig {
     private JwtCheckFilter jwtCheckFilter;
     @Resource
     private ValidateCodeFilter validateCodeFilter;
-    @Resource
-    private CaptchaFilter captchaFilter;
 
     @Bean
     public SecurityFilterChain setSecurityFilter(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
         httpSecurity.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.authorizeHttpRequests()
                 .requestMatchers("/code/getCaptcha")
+                .permitAll()
+                .requestMatchers("/setter/login")
                 .permitAll()
                 .anyRequest().authenticated();
         httpSecurity.formLogin()
@@ -56,12 +53,14 @@ public class WebSecurityConfig {
                 .accessDeniedHandler(appAccessDenyHandler);
         httpSecurity.logout()
                 .logoutSuccessHandler(appLogoutSuccessHandler);
+        httpSecurity.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         return httpSecurity.build();
     }
 
     @Bean
     public PasswordEncoder setPwdEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
 

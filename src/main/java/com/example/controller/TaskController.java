@@ -8,6 +8,7 @@ import com.example.model.entity.Task;
 import com.example.service.inter.TaskService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +23,17 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/listTask")
+    @PreAuthorize("hasAnyAuthority('/task/**','task:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Task>> getAllTask(@RequestParam(value = "taskId",required = false) Integer taskId,
-                                               @RequestParam(value = "taskDescription",required = false) String taskDescription) {
+    public JsonResponse<List<Task>> getAllTask(@RequestParam(value = "taskId", required = false) Integer taskId,
+                                               @RequestParam(value = "taskDescription", required = false) String taskDescription) {
         QueryWrapper<Task> taskQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (taskId != null) {
-            taskQueryWrapper.eq("task_id",taskId);
+            taskQueryWrapper.eq("task_id", taskId);
         }
         if (taskDescription != null && !taskDescription.isEmpty()) {
-            taskQueryWrapper.like("task_description",taskDescription);
+            taskQueryWrapper.like("task_description", taskDescription);
         }
         if (flag) {
             return JsonResponse.success(taskService.list(taskQueryWrapper));
@@ -39,7 +41,8 @@ public class TaskController {
         return JsonResponse.success(taskService.list());
     }
 
-    @RequestMapping (value = "/removeTask/{tskId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeTask/{tskId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAnyAuthority('/task/**','task:delete')")
     public JsonResponse<String> removeTask(@PathVariable Integer tskId) {
         boolean removeSuccess = taskService.removeById(tskId);
         if (removeSuccess) {
@@ -49,6 +52,7 @@ public class TaskController {
     }
 
     @PostMapping("/saveTask")
+    @PreAuthorize("hasAnyAuthority('/task/**','task:add')")
     public JsonResponse<String> saveTask(Task task) {
         boolean saveSuccess = taskService.save(task);
         if (saveSuccess) {
@@ -58,6 +62,7 @@ public class TaskController {
     }
 
     @PostMapping("/updateTask")
+    @PreAuthorize("hasAnyAuthority('/task/**','task:update')")
     public JsonResponse<String> updateTask(Task task) {
         boolean updateSuccess = taskService.updateById(task);
         if (updateSuccess) {
@@ -67,6 +72,7 @@ public class TaskController {
     }
 
     @GetMapping("/getTskIds")
+    @PreAuthorize("hasAnyAuthority('/task/**','task:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Task>> getProIds() {
         QueryWrapper<Task> tskQueryWrapper = new QueryWrapper<>();

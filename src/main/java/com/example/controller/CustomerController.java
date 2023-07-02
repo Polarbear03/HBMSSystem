@@ -7,6 +7,7 @@ import com.example.model.entity.Customer;
 import com.example.service.inter.CustomerService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping("/listCustom")
+    @PreAuthorize("hasAnyAuthority('/customer/**','customer:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Customer>> getAllCustomer(@RequestParam(value = "customerId",required = false) Integer customerId,
                                                        @RequestParam(value = "fullName",required = false) String fullName,
@@ -46,6 +48,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/removeCustom/{customerId}",method = RequestMethod.DELETE)
+    @PreAuthorize("hasAnyAuthority('customer:delete','/customer/**')")
     public JsonResponse<String> removeCustom(@PathVariable Integer customerId) {
         boolean removeSuccess = customerService.removeById(customerId);
         if (removeSuccess) {
@@ -55,6 +58,7 @@ public class CustomerController {
     }
 
     @PostMapping("/saveCustom")
+    @PreAuthorize("hasAnyAuthority('customer:add','/customer/**')")
     public JsonResponse<String> saveCustomer(Customer customer) {
         boolean saveSuccess = customerService.save(customer);
         if (saveSuccess) {
@@ -64,6 +68,7 @@ public class CustomerController {
     }
 
     @PostMapping("/updateCustom")
+    @PreAuthorize("hasAnyAuthority('customer:update','/customer/**')")
     public JsonResponse<String> updateCustomer(Customer customer) {
         boolean updateSuccess = customerService.updateById(customer);
         if (updateSuccess) {
@@ -73,6 +78,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getCusIds")
+    @PreAuthorize("hasAnyAuthority('/customer/**','customer:query')")
     @Transactional(readOnly = true)
     public JsonResponse<List<Customer>> getCusIds() {
         QueryWrapper<Customer> cusQueryWrapper = new QueryWrapper<>();

@@ -31,7 +31,7 @@ public class User implements Serializable {
     private Timestamp dateOfBirth;
     private Timestamp registrationDate;
     private String avatar;
-    private Integer enable;
+    private Integer enabled;
     private Integer accountNoExpired;
     private Integer credentialsNoExpired;
     private Integer accountNoLocked;
