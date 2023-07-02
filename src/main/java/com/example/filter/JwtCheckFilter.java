@@ -32,7 +32,11 @@ public class JwtCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/setter/login") || requestURI.equals("/setter/code/getCaptcha")) {
+        if (requestURI.equals("/setter/login")
+                || requestURI.equals("/setter/code/getCaptcha")
+                || requestURI.equals("/setter/review/listReview")
+                || requestURI.equals("/setter/goods/list")
+                || requestURI.equals("/setter/producttype/listPC")) {
             filterChain.doFilter(request, response);
         } else {
             // 获取请求头中的token，如果为空，则输出错误信息

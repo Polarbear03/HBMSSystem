@@ -2,6 +2,7 @@ package com.example.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Admin;
 import com.example.model.group.AddGroup;
@@ -26,9 +27,11 @@ public class AdminController {
     @GetMapping("/adminList")
     @PreAuthorize("hasAnyAuthority('admin:query','/admin/**')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Admin>> getAllAdmin(@RequestParam(value = "adminId", required = false) Integer adminId,
+    public JsonResponse<Page<Admin>> getAllAdmin(@RequestParam(value = "adminId", required = false) Integer adminId,
                                                  @RequestParam(value = "fullName", required = false) String fullName,
-                                                 @RequestParam(value = "contact", required = false) String contact) {
+                                                 @RequestParam(value = "contact", required = false) String contact,
+                                                 @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<Admin> adminQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (adminId != null) {
@@ -43,10 +46,13 @@ public class AdminController {
             adminQueryWrapper.likeLeft("contact", contact);
             flag = true;
         }
+        Page<Admin> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(adminService.list(adminQueryWrapper));
+            adminService.page(page,adminQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(adminService.list());
+        adminService.page(page);
+        return JsonResponse.success(page);
     }
 
     @PostMapping("/modifyAdmin")

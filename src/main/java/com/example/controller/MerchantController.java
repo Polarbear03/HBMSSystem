@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Customer;
 import com.example.model.entity.Merchant;
@@ -24,9 +25,11 @@ public class MerchantController {
     @GetMapping("/listMerchant")
     @PreAuthorize("hasAnyAuthority('/merchant/**','merchant:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Merchant>> getAllMerchant(@RequestParam(value = "merchantId", required = false) Integer merchantId,
+    public JsonResponse<Page<Merchant>> getAllMerchant(@RequestParam(value = "merchantId", required = false) Integer merchantId,
                                                        @RequestParam(value = "fullName", required = false) String fullName,
-                                                       @RequestParam(value = "contact", required = false) String contact) {
+                                                       @RequestParam(value = "contact", required = false) String contact,
+                                                       @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                       @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<Merchant> merQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (merchantId != null) {
@@ -41,10 +44,13 @@ public class MerchantController {
             merQueryWrapper.likeLeft("contact", contact);
             flag = true;
         }
+        Page<Merchant> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(merchantService.list(merQueryWrapper));
+            merchantService.page(page,merQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(merchantService.list());
+        merchantService.page(page);
+        return JsonResponse.success(page);
     }
 
 

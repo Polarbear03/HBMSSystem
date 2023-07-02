@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Admin;
 import com.example.model.entity.Customer;
@@ -25,9 +26,11 @@ public class InstallerController {
     @GetMapping("/listIns")
     @PreAuthorize("hasAnyAuthority('/installer/**','installer:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Installer>> getAllInstaller(@RequestParam(value = "installerId", required = false) Integer installerId,
+    public JsonResponse<Page<Installer>> getAllInstaller(@RequestParam(value = "installerId", required = false) Integer installerId,
                                                          @RequestParam(value = "fullName", required = false) String fullName,
-                                                         @RequestParam(value = "contact", required = false) String contact) {
+                                                         @RequestParam(value = "contact", required = false) String contact,
+                                                         @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                         @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
 
         QueryWrapper<Installer> installerQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
@@ -43,10 +46,13 @@ public class InstallerController {
             installerQueryWrapper.likeLeft("contact", contact);
             flag = true;
         }
+        Page<Installer> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(installerService.list(installerQueryWrapper));
+            installerService.page(page,installerQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(installerService.list());
+        installerService.page(page);
+        return JsonResponse.success(page);
     }
 
     @RequestMapping(value = "/removeIns/{installerId}", method = RequestMethod.DELETE)

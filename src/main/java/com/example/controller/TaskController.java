@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Installer;
 import com.example.model.entity.Product;
@@ -25,8 +26,10 @@ public class TaskController {
     @GetMapping("/listTask")
     @PreAuthorize("hasAnyAuthority('/task/**','task:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Task>> getAllTask(@RequestParam(value = "taskId", required = false) Integer taskId,
-                                               @RequestParam(value = "taskDescription", required = false) String taskDescription) {
+    public JsonResponse<Page<Task>> getAllTask(@RequestParam(value = "taskId", required = false) Integer taskId,
+                                               @RequestParam(value = "taskDescription", required = false) String taskDescription,
+                                               @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                               @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<Task> taskQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (taskId != null) {
@@ -35,10 +38,13 @@ public class TaskController {
         if (taskDescription != null && !taskDescription.isEmpty()) {
             taskQueryWrapper.like("task_description", taskDescription);
         }
+        Page<Task> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(taskService.list(taskQueryWrapper));
+            taskService.page(page,taskQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(taskService.list());
+        taskService.page(page);
+        return JsonResponse.success(page);
     }
 
     @RequestMapping(value = "/removeTask/{tskId}", method = RequestMethod.DELETE)

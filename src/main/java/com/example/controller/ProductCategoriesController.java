@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Order;
 import com.example.model.entity.ProductCategories;
@@ -24,9 +25,11 @@ public class ProductCategoriesController {
     @GetMapping("/listPC")
     //@PreAuthorize("hasAnyAuthority('/pc/**','pc:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<ProductCategories>> getAllPC(@RequestParam(value = "categoryId", required = false) Integer categoryId,
+    public JsonResponse<Page<ProductCategories>> getAllPC(@RequestParam(value = "categoryId", required = false) Integer categoryId,
                                                           @RequestParam(value = "category_name", required = false) String categoryName,
-                                                          @RequestParam(value = "description", required = false) String description) {
+                                                          @RequestParam(value = "description", required = false) String description,
+                                                          @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<ProductCategories> productCategoriesQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (categoryId != null) {
@@ -39,10 +42,13 @@ public class ProductCategoriesController {
         if (description != null && !description.isEmpty()) {
             productCategoriesQueryWrapper.like("description", description);
         }
+        Page<ProductCategories> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(productCategoriesService.list(productCategoriesQueryWrapper));
+            productCategoriesService.page(page,productCategoriesQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(productCategoriesService.list());
+        productCategoriesService.page(page);
+        return JsonResponse.success(page);
     }
 
 

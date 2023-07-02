@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Admin;
 import com.example.model.entity.Review;
@@ -27,8 +28,10 @@ public class ReviewController {
     @GetMapping("/listReview")
     //@PreAuthorize("hasAnyAuthority('/review/**','review:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Review>> getAllReview(@RequestParam(value = "reviewId", required = false) Integer reviewId,
-                                                   @RequestParam(value = "reviewContent", required = false) String reviewContent) {
+    public JsonResponse<Page<Review>> getAllReview(@RequestParam(value = "reviewId", required = false) Integer reviewId,
+                                                   @RequestParam(value = "reviewContent", required = false) String reviewContent,
+                                                   @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<Review> queryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (reviewId != null) {
@@ -38,10 +41,13 @@ public class ReviewController {
         if (reviewContent != null && !reviewContent.isEmpty()) {
             queryWrapper.like("review_content", reviewContent);
         }
+        Page<Review> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(reviewService.list(queryWrapper));
+            reviewService.page(page,queryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(reviewService.list());
+        reviewService.page(page);
+        return JsonResponse.success(page);
     }
 
     @PostMapping("/modifyRev")

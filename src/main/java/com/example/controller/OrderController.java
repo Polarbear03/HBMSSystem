@@ -1,11 +1,14 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Installer;
 import com.example.model.entity.Merchant;
 import com.example.model.entity.Order;
 import com.example.model.entity.Product;
+import com.example.service.inter.CustomerService;
+import com.example.service.inter.MerchantService;
 import com.example.service.inter.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +25,14 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
+
     @GetMapping("/listOrder")
     @PreAuthorize("hasAnyAuthority('/order/**','order:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Order>> getAllOrder(@RequestParam(value = "orderId", required = false) Integer orderId,
-                                                 @RequestParam(value = "orderStatus", required = false) String orderStatus) {
+    public JsonResponse<Page<Order>> getAllOrder(@RequestParam(value = "orderId", required = false) Integer orderId,
+                                                 @RequestParam(value = "orderStatus", required = false) String orderStatus,
+                                                 @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<Order> ordQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (orderId != null) {
@@ -37,10 +43,13 @@ public class OrderController {
             ordQueryWrapper.likeLeft("order_status", orderStatus);
             flag = true;
         }
+        Page<Order> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(orderService.list(ordQueryWrapper));
+            orderService.page(page,ordQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(orderService.list());
+        orderService.page(page);
+        return JsonResponse.success(page);
     }
 
 

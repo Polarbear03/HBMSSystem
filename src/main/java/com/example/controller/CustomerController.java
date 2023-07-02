@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Admin;
 import com.example.model.entity.Customer;
@@ -24,9 +25,12 @@ public class CustomerController {
     @GetMapping("/listCustom")
     @PreAuthorize("hasAnyAuthority('/customer/**','customer:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Customer>> getAllCustomer(@RequestParam(value = "customerId",required = false) Integer customerId,
+    public JsonResponse<Page<Customer>> getAllCustomer(@RequestParam(value = "customerId",required = false) Integer customerId,
                                                        @RequestParam(value = "fullName",required = false) String fullName,
-                                                       @RequestParam(value = "contact",required = false) String contact) {
+                                                       @RequestParam(value = "contact",required = false) String contact,
+                                                       @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                       @RequestParam(value = "pageSize",defaultValue = "10") int pageSize
+    ) {
         QueryWrapper<Customer> customQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (customerId != null) {
@@ -41,10 +45,13 @@ public class CustomerController {
             customQueryWrapper.likeLeft("contact",contact);
             flag = true;
         }
+        Page<Customer> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(customerService.list(customQueryWrapper));
+            customerService.page(page,customQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(customerService.list());
+        customerService.page(page);
+        return JsonResponse.success(page);
     }
 
     @RequestMapping(value = "/removeCustom/{customerId}",method = RequestMethod.DELETE)

@@ -6,7 +6,7 @@
 <mapper namespace="com.example.dao.mapper.UserMapper">
 
     <sql id="UserInfo">
-        user_id,username,password,role_id,full_name,contact,address,email,gender,date_of_birth,registration_date,avatar,
+        user_id,username,password,full_name,contact,address,email,gender,date_of_birth,registration_date,avatar,
             enabled,account_no_expired,credentials_no_expired,account_no_locked
     </sql>
     <select id="getUserByUserName" resultType="user">

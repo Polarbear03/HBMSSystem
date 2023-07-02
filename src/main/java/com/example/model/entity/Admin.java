@@ -24,9 +24,6 @@ public class Admin {
     @Min(value = 1,message = "用户Id从1开始",groups = {EditGroup.class, AddGroup.class})
     private Integer userId;
 
-    @NotNull(message = "权限未分配，请确保你已经注册系统",groups = {EditGroup.class, AddGroup.class})
-    @Min(value = 1,message = "用户Id从1开始",groups = {EditGroup.class, AddGroup.class})
-    private Integer roleId;
     @NotBlank(message = "请正确填写该管理员的姓名",groups = {EditGroup.class,AddGroup.class})
     @Size(min = 1,max = 8,message = "用户姓名过长",groups = {EditGroup.class, AddGroup.class})
     private String fullName;

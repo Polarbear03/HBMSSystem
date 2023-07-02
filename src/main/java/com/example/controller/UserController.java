@@ -28,4 +28,17 @@ public class UserController {
         return JsonResponse.success(userService.list(usrQueryWrapper));
     }
 
+
+    @PostMapping({"/register","/addUser"})
+    public JsonResponse<String> saveUser(@RequestBody User user) {
+        boolean saveSuccess = userService.save(user);
+        if (saveSuccess) {
+            return JsonResponse.success("添加用户成功");
+        }
+        return JsonResponse.error("添加用户失败，请稍后重试");
+    }
+
+
+
+
 }

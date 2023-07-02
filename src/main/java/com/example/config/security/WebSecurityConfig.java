@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
 @Slf4j
@@ -37,6 +39,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain setSecurityFilter(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.cors();
         httpSecurity.csrf().disable();
         httpSecurity.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
@@ -44,6 +47,12 @@ public class WebSecurityConfig {
                 .requestMatchers("/code/getCaptcha")
                 .permitAll()
                 .requestMatchers("/setter/login")
+                .permitAll()
+                .requestMatchers("/review/listReview")
+                .permitAll()
+                .requestMatchers("/goods/list")
+                .permitAll()
+                .requestMatchers("/producttype/listPC")
                 .permitAll()
                 .anyRequest().authenticated();
         httpSecurity.formLogin()
@@ -61,6 +70,20 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder setPwdEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOriginPatterns("*")
+                        .allowedMethods("*")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }
 

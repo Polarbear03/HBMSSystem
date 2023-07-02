@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.bean.JsonResponse;
 import com.example.model.entity.Product;
 import com.example.service.inter.ProductService;
@@ -23,9 +24,11 @@ public class ProductController {
     @GetMapping({"/list", "/findProduct"})
     //@PreAuthorize("hasAnyAuthority('/product/**','product:query')")
     @Transactional(readOnly = true)
-    public JsonResponse<List<Product>> getAllProduct(@RequestParam(value = "productId", required = false) Integer productId,
+    public JsonResponse<Page<Product>> getAllProduct(@RequestParam(value = "productId", required = false) Integer productId,
                                                      @RequestParam(value = "productName", required = false) String productName,
-                                                     @RequestParam(value = "description", required = false) String description) {
+                                                     @RequestParam(value = "description", required = false) String description,
+                                                     @RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                                     @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         QueryWrapper<Product> proQueryWrapper = new QueryWrapper<>();
         boolean flag = false;
         if (productId != null) {
@@ -40,10 +43,13 @@ public class ProductController {
             proQueryWrapper.like("description", description);
             flag = true;
         }
+        Page<Product> page = new Page<>(pageNo,pageSize);
         if (flag) {
-            return JsonResponse.success(productService.list(proQueryWrapper));
+            productService.page(page,proQueryWrapper);
+            return JsonResponse.success(page);
         }
-        return JsonResponse.success(productService.list());
+        productService.page(page);
+        return JsonResponse.success(page);
     }
 
     @PostMapping("/modifyProduct")
