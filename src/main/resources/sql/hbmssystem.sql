@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 01/07/2023 22:10:03
+ Date: 02/07/2023 14:54:12
 */
 
 SET NAMES utf8mb4;
@@ -30,7 +30,7 @@ CREATE TABLE `admins`  (
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`admin_id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2038530050 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of admins
@@ -146,7 +146,7 @@ CREATE TABLE `permissions`  (
   `status` int NULL DEFAULT NULL,
   `delete_falg` int NULL DEFAULT NULL,
   PRIMARY KEY (`permission_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permissions
@@ -266,6 +266,7 @@ CREATE TABLE `reviews`  (
 -- ----------------------------
 -- Records of reviews
 -- ----------------------------
+INSERT INTO `reviews` VALUES (1, 1, 1, '1', 1, '2023-07-02 14:23:07');
 
 -- ----------------------------
 -- Table structure for role_permissions
@@ -278,7 +279,7 @@ CREATE TABLE `role_permissions`  (
   PRIMARY KEY (`relation_id`) USING BTREE,
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   INDEX `permission_id`(`permission_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_permissions
@@ -378,7 +379,7 @@ CREATE TABLE `roles`  (
   `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of roles
@@ -411,29 +412,13 @@ CREATE TABLE `tasks`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for user_role
--- ----------------------------
-DROP TABLE IF EXISTS `user_role`;
-CREATE TABLE `user_role`  (
-  `relation_id` int NOT NULL AUTO_INCREMENT COMMENT '用户和角色对应表',
-  `user_id` int NULL DEFAULT NULL COMMENT '用户ID',
-  `role_id` int NULL DEFAULT NULL COMMENT '角色ID',
-  PRIMARY KEY (`relation_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_role
--- ----------------------------
-INSERT INTO `user_role` VALUES (1, 1, 1);
-
--- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `role_id` int NULL DEFAULT 3,
   `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `contact` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -450,12 +435,13 @@ CREATE TABLE `users`  (
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE COMMENT '用户名',
   INDEX `role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 188755971 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 'dingZ302116', '123456', 1, 'zhangsan', '1234566', 'abdibsav', '123899162@email.com', '男', '2023-07-01 14:13:40', '2023-07-01 14:13:40', '1234354', 1, 1, 1, 1);
 INSERT INTO `users` VALUES (188755970, 'zhangsan', '123456', 3, 'zhangsan', '13639234704', '山东省淄博市', '3112371994@qq.com', '男', '2023-07-01 19:07:20', '2023-07-01 19:07:20', NULL, 1, 1, 1, 1);
+INSERT INTO `users` VALUES (1916956673, 'wangwu', '$2a$10$e6aGbLWivy36hPJfzQu7pey/NWj2y6vE/EhbwFUT7CYOAaoteWTMy', 3, 'zhangsan', '13639234704', '山东省淄博市', '3112371994@qq.com', '男', '2023-07-02 13:40:41', '2023-07-02 13:40:41', NULL, 1, 1, 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
